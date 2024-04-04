@@ -1,0 +1,30 @@
+{% extends "times/start.html" %}
+
+{% load static  %}
+
+{% block inhalt %}
+    <h1>Zu erledigen</h1>
+    <div class="col-2">
+        Linke Seite
+    </div>
+    <div class="col-8 shadow bg-light">
+        <ul class="list-group">
+            {%for aufgabe in aufgaben%}
+            <li class="list-group-item">
+                <div class="row">
+                <div class="col-10">
+                    <input class="form-check-input me-1" type="radio" name="listGroupRadio" value="" id="radio_{{aufgabe.pk}}" checked>
+                    <label class="form-check-label" for="radio_{{aufgabe.pk}}">{{aufgabe.titel}} ({{aufgabe.prio}})</label>
+                </div>
+                <div class="col-2 d-flex justify-content-end">
+                    <a href="{% url 'prio_plus' aufgabe.id %}"><img src="{% static 'pics/plus-circle.svg' %}" alt=""></a>
+                     - 
+                    <a href="{% url 'prio_minus' aufgabe.id %}"><img src="{% static 'pics/dash-circle.svg' %}" alt=""></a>
+                </div>
+            </div>
+            </li>
+            {%endfor%}
+        </div>
+        </ul>
+    </div>
+{% endblock inhalt %}
