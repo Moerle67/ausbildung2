@@ -18,11 +18,11 @@
             <tboby>
             {% for frage in fragen %}
                 <tr>
-                    <td><a class="link-underline-light" href="{% url 'richtung' frage.klausur.id frage.frage.id 1 %}">+</a></td>
-                    <td><a class="link-underline-light" href="{% url 'richtung' frage.klausur.id frage.frage.id 2 %}">-</a></td>
-                    <td title="{{frage.frage.frage}}">{{forloop.counter}}. ({{frage.position}}) {{frage}}</td>
+                    <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 1 %}">+</a></td>
+                    <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 2 %}">-</a></td>
+                    <td title="{{frage.0.frage.frage}}">{{forloop.counter}}. ({{frage.0.position}}) {{frage.0}} {{frage.1}}</td>
                     {% comment %} <td><input class="px-auto form-check-input" type="checkbox" value="{{frage.id}}" id="checkbox{{frage.id}}" onchange="this.form.submit()" name="nl"></td> {% endcomment %}
-                    <td><button type="submit" class="btn {% if frage.seitenwechsel %}btn-success{% else %}btn-light{% endif %} btn-sm" value="{{frage.id}}" name="nl" title="Nach der Frage einen Seitenwechsel einfügen">Neue Seite</button></td>
+                    <td><button type="submit" class="btn {% if frage.0.seitenwechsel %}btn-success{% else %}btn-light{% endif %} btn-sm" value="{{frage.id}}" name="nl" title="Nach der Frage einen Seitenwechsel einfügen">Neue Seite</button></td>
                 </tr>
             {% endfor %}
             </tboby>
@@ -32,9 +32,6 @@
             <div class="col-3"><a href="{% url 'gen_pdf' klausur.id 4 %}" target="_empty"><button type="button" class="btn btn-outline-success">Muster generieren</button></a></div>
             <div class="col-3"><a href="{% url 'zufall' klausur.id %}"><button type="button" class="btn btn-outline-success">Zufällig anordnen</button></a></div>
             <div class="col-3"><a href="{% url 'evaluation' klausur.id %}" target="_empty"><button type="button" class="btn btn-outline-success">Auswertung</button></a></div>
-            <!-- <div class="col-2"><a href="{% url 'gen_pdf' fragen.0.klausur.id 3 %}" target="_empty"><button class="btn btn-primary" type="submit">PDF generieren</button></a></div>
-            <div class="col-2"><a href="{% url 'gen_pdf' fragen.0.klausur.id 4 %}" target="_empty"><button class="btn btn-primary" type="submit">PDF Muster generieren</button></a></div>
-            <div class="col-2"><a href="{% url 'zufall' fragen.0.klausur.id %}" ><button class="btn btn-warning" type="submit">Zufällig anordnen</button></a></div> -->
         </div>  
     </form>
 {% endblock content %}

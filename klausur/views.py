@@ -2,7 +2,7 @@ import datetime
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
 from .models import Klausur, Klausurthema, Frage, Teilnehmer, Answer
-from django.db.models import Sum
+from django.db.models import Sum, Avg
 import locale, random
 from django.contrib.auth.decorators import permission_required
 
@@ -97,27 +97,35 @@ def gen_pdf(request, id, typ):
 
 @permission_required('klausur.view_teilnehmer')
 def klaus_design(request, id):
-    klausur = Klausur.objects.get(pk=id)
-    fragen = klausur.fragen.all()
+    ds_klausur = Klausur.objects.get(pk=id)
+    fragen = ds_klausur.fragen.all()
     i = 0
     # Fragen eintragen
     for frage in fragen:
-        position, created = Klausurthema.objects.get_or_create(klausur = klausur, frage=frage)
+        position, created = Klausurthema.objects.get_or_create(klausur = ds_klausur, frage=frage)
         if created:
             position.position = i
             position.save()        
         i +=1
 
     # Datenbank leeren
-    fragen = Klausurthema.objects.filter(klausur=klausur)
+    fragen = Klausurthema.objects.filter(klausur=ds_klausur)
     # print(fragen)
     for frage in fragen:
-        if not klausur.fragen.filter(id=frage.frage.id).exists():
-            Klausurthema.objects.get(frage=frage.frage, klausur=klausur).delete()
-    pos_fragen = Klausurthema.objects.filter(klausur = klausur)
+        if not ds_klausur.fragen.filter(id=frage.frage.id).exists():
+            Klausurthema.objects.get(frage=frage.frage, klausur=ds_klausur).delete()
+    pos_fragen = Klausurthema.objects.filter(klausur = ds_klausur)
+    lst_fragen = []
+    for frage in pos_fragen:
+        sum=Answer.objects.filter(klausur = ds_klausur, frage=frage.frage).aggregate(Avg("punkte"))['punkte__avg']
+        if sum is not None:
+            sum=str(round(Answer.objects.filter(klausur = ds_klausur, frage=frage.frage).aggregate(Avg("punkte"))['punkte__avg']/frage.frage.punkte*100,1))+"%"
+        else:
+            sum=""
+        lst_fragen.append((frage, sum))
     content = {
-        'klausur': klausur,
-        'fragen': pos_fragen,
+        'klausur': ds_klausur,
+        'fragen': lst_fragen,
     }
     return render(request, "design.html", content)
 

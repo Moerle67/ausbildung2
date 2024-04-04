@@ -12,7 +12,7 @@
         <div class="mb-3 row">
             <div class="col-9">{{forloop.counter}}. {{frage.0.frage}} </div>
             <div class="col-1"><input type="number" class="form-control" name="punkte_{{frage.0.frage.id}}" onchange="this.form.submit()" value="{{frage.1}}"></div>
-            <div class="col-auto">({{frage.0.frage.punkte}})</div>
+            <div class="col-auto">{{forloop.counter}} - ({{frage.0.frage.punkte}})</div>
         </div>
         {% if frage.0.seitenwechsel  %}<hr />{% endif %}
         <hr />
