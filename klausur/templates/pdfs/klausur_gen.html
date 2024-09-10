@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//DE" "http://www.w3.org/TR/html4/loose.dtd">
+{% load static %}
 <html>
     <head>
-        {% load static %}
         <meta charset="utf-8">
         <title>{% if pdf_title %}{{ pdf_title }}{% else %}PDF{% endif %}</title>
         <style type="text/css">
@@ -58,7 +58,7 @@
         <!-- Content for Static Frame 'footer_frame' -->
         <div id="footer_content">(c) - page <pdf:pagenumber>
             of <pdf:pagecount>
-        </div> 
+        </div>
 
         <div class='wrapper'>
             <div class='header'>
@@ -73,8 +73,7 @@
             <p>{{frage.0.frage|safe}}</p>
             <div style="width: 20%;" align="right">_____/ {{frage.0.punkte}}</div>
             {% if frage.0.bild %}
-            {{frage.0.bild.url}}
-                <img src={% static {frage.0.bild.url}"%} alt="{{frage.0.frage}}">
+                <img src="{{frage.0.bild.path}}" style="zoom: {{frage.0.bildbreite}}%;" alt="{{frage.0.frage}}">
             {% endif %}
             <br />
             <br />
@@ -90,11 +89,11 @@
     function allowDrop(ev) {
       ev.preventDefault();
     }
-    
+
     function drag(ev) {
       ev.dataTransfer.setData("text", ev.target.id);
     }
-    
+
     function drop(ev) {
       ev.preventDefault();
       var data = ev.dataTransfer.getData("text");

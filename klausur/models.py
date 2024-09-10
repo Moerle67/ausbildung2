@@ -73,7 +73,7 @@ class Gruppe(models.Model):
     #    return reverse("Gruppe_detail", kwargs={"pk": self.pk})
     
 class Klausur(models.Model):
-    titel = models.CharField(("Titel"), max_length=50)
+    titel = models.CharField(("Überschrift"), max_length=50)
     thema = models.CharField(("Thema"), max_length=50)
     termin = models.DateTimeField(("termin"), auto_now=False, auto_now_add=False)
     # gruppe = models.CharField(("Gruppe"), max_length=50)

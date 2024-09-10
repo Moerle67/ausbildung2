@@ -72,6 +72,9 @@
             <div style="width: 20%;" align="right">_____/ {{frage.0.punkte}}</div>
             <p>{{frage.0.frage|safe}}</p>
             <p>{{frage.0.musterantwort|safe}}</p>
+            {% if frage.0.bildmuster %}
+                <img src="{{frage.0.bildmuster.path}}" style="zoom: {{frage.0.bildbreite}}%;" alt="{{frage.0.frage}}">
+            {% endif %}
         </div>
             {% if frage.seitenwechsel %}
                 <pdf:nextpage />
