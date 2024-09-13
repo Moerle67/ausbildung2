@@ -1,6 +1,7 @@
 from datetime import date
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Thema(models.Model):
@@ -10,7 +11,7 @@ class Thema(models.Model):
 
     class Meta:
         verbose_name = ("Thema")
-        verbose_name_plural = ("Themas")
+        verbose_name_plural = ("Themen")
         ordering = ['titel']
     
     def __str__(self):
@@ -32,13 +33,14 @@ class Frage(models.Model):
     punkte = models.IntegerField(("Erreichbare Punkte"), default=1)
 #    platz = models.IntegerField(("Platz"), default=2)
     schwierigkeit = models.IntegerField(("Schwierigkeit") , default=2)
+    author = models.ForeignKey(User, verbose_name="Autor", on_delete=models.RESTRICT)
     class Meta:
         verbose_name = ("Frage")
         verbose_name_plural = ("Fragen")
         ordering = ['thema', 'titel', ]
 
     def __str__(self):
-        return f"{self.titel}/{self.inhalt} ({self.thema} ({self.punkte} Punkte))"
+        return f"{self.titel}/{self.inhalt} ({self.thema} ({self.punkte} Punkte); {self.author})"
 
     #def get_absolute_url(self):
     #    return reverse("Fragen_detail", kwargs={"pk": self.pk})
@@ -48,7 +50,7 @@ class Teilnehmer(models.Model):
 
     class Meta:
         verbose_name = "Teilnehmer"
-        verbose_name_plural = "Teilnehmers"
+        verbose_name_plural = "Teilnehmer"
         ordering = ["name"]
 
     def __str__(self):
@@ -79,6 +81,7 @@ class Klausur(models.Model):
     # gruppe = models.CharField(("Gruppe"), max_length=50)
     gruppe = models.ForeignKey(Gruppe, verbose_name=("Gruppe"), on_delete=models.CASCADE, null=True)
     fragen = models.ManyToManyField(Frage, verbose_name=("Fragen"))
+    author = models.ForeignKey(User, verbose_name="Autor", on_delete=models.RESTRICT)
 
     @property
     def get_gesamtpunkte(self):
@@ -99,7 +102,7 @@ class Klausur(models.Model):
         ordering = [ 'gruppe', '-termin']
 
     def __str__(self):
-        return f"{self.gruppe} - {self.titel}/{self.termin.date()}/{self.get_gesamtpunkte} Punkte" 
+        return f"{self.gruppe} - {self.titel}/{self.termin.date()}/{self.get_gesamtpunkte} Punkte, {self.author}" 
 
     #def get_absolute_url(self):
     #    return reverse("klausur_design", kwargs={"pk": self.pk})
