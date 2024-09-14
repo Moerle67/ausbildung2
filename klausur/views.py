@@ -5,6 +5,7 @@ from .models import Klausur, Klausurthema, Frage, Teilnehmer, Answer
 from django.db.models import Sum, Avg
 import locale, random
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth import authenticate, login, logout
 
 from . import renderers
 
@@ -21,30 +22,34 @@ def pdf_view(self, request, *args, **kwargs):
     return renderers.render_to_pdf('pdfs/invoice.html', data)
 
 
-def advanced_pdf_view(request):
-    thema = "Testklausur"
-    fragen = Frage.objects.all()
-    context = {
-        'thema': thema,
-        'fragen': fragen,
-    }
-    response = renderers.render_to_pdf("pdfs/klausur.html", context)
-    if response.status_code == 404:
-        raise Http404("Invoice not found")
+# @permission_required('klausur.view_klausur')
+def index(request):
+    user=request.user
+    if user.is_anonymous:
+        liste = {}
+    else:
+        liste = Klausur.objects.filter(author=user)
 
-    filename = f"Klausur_{thema}.pdf"
-    """
-    Tell browser to view inline (default)
-    """
-    content = f"inline; filename={filename}"
-    download = request.GET.get("download")
-    if download:
-        """
-        Tells browser to initiate download
-        """
-        content = f"attachment; filename={filename}"
-    response["Content-Disposition"] = content
-    return response
+    content= {
+        'aim': '/klausur',
+        'liste': liste,
+    }
+    return render(request,'klausur.html', content)
+
+
+def auth(request):
+    name = request.POST['user']
+    password = request.POST['pwd']
+    aim = request.POST['aim']
+    user = authenticate(request, username=name, password=password)
+    if user is not None:
+        login(request, user)
+    return redirect(aim)
+
+def deauth(request):
+    aim = request.POST['aim']
+    logout(request)
+    return redirect(aim)
 
 @permission_required('klausur.view_teilnehmer')
 def gen_pdf(request, id, typ):

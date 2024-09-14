@@ -5,7 +5,10 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('', views.advanced_pdf_view, name= 'test'),
+    path('', views.index, name = 'index'),
+    path('auth', views.auth, name = 'auth'),
+    path('logout', views.deauth, name = 'deout'),
+    
     path('g_pdf/<int:id>/<int:typ>', views.gen_pdf, name= 'gen_pdf'),
     path('design/<int:id>', views.klaus_design, name= 'klausur_design'),
     path('pos/<int:klausur>/<int:frage>/<int:richtung>', views.richtung, name= 'richtung'),
