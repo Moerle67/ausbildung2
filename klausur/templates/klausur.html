@@ -1,80 +1,20 @@
-<!doctype html>
-<html lang="de">
-    <head>
-        <title>BFW Klausuren</title>
-        <!-- Required meta tags -->
-        <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+{% extends "start.html" %}
 
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
-    </head>
+{% block title %}Haben{% endblock title %}
 
-    <body>
-        <header>
-            <!-- place navbar here -->
-             <div class="container">
-                <div class="row bg-primary shadow">
-                    <div class="col-10">
-                        BWF-Klausuren
-                    </div>
-                    <div class="col-2">
-                        {% if user.is_authenticated %}
-                            <form action="/klausur/logout" method="post">
-                                {% csrf_token %} 
-                                {{user}}
-                                <button type="submit" class="btn btn-outline-danger">Abmelden</button>
-                                <input type="hidden" name="aim" value="{{aim}}">
-                            </form> 
-                        {% else %}
-                            <form action="/klausur/auth" method="post">
-                                {% csrf_token %} 
-                                <input type="hidden" name="aim" value="{{aim}}">
-                                <input type="text" name="user" id="" placeholder="Benutzer" class="form-control">
-                                <input type="password" name="pwd" id="" placeholder="Passwort" class="form-control">
-                                <button type="submit" class="btn btn-outline-warning">Anmelden</button>
-                            </form>
-                        {% endif %}
-                        </div>
-                </div>
-             </div>
-        </header>
-        <main>
-            <div class="container">
-                <div class="row">
-                    <div class="col-10">
-                        <ul>
-                        {% for element in liste %}
-                            <li>{{element}}</li>
-                        {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+{% block brand %}BWF-Klausuren{% endblock brand %}
 
-        </main>
-        <footer>
-            <!-- place footer here -->
-        </footer>
-        <!-- Bootstrap JavaScript Libraries -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
-    </body>
-</html>
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <ul>
+            {% for element in liste %}
+                <li><a href="/klausur/design/{{element.id}}">{{element}}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+ 
