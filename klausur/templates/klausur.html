@@ -5,16 +5,11 @@
 {% block brand %}BWF-Klausuren{% endblock brand %}
 
 {% block content %}
-<div class="container">
-    <div class="row">
-        <div class="col-10">
-            <ul>
-            {% for element in liste %}
-                <li><a href="/klausur/design/{{element.id}}">{{element}}</a></li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
+<div class="col-10">
+    <ul>
+    {% for element in liste %}
+        <li><a href="/klausur/design/{{element.id}}">{{element}}</a></li>
+    {% endfor %}
+    </ul>
 </div>
 {% endblock content %}
- 
