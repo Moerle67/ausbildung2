@@ -112,7 +112,7 @@ class Klausur(models.Model):
 class Klausurthema(models.Model):
     klausur = models.ForeignKey(Klausur, verbose_name=("Klausur"), on_delete=models.CASCADE)
     frage = models.ForeignKey(Frage, verbose_name=("Frage"), on_delete=models.RESTRICT)
-    position = models.IntegerField(("Position"), default=1)
+    position = models.IntegerField(("Position"), default=10)
     seitenwechsel = models.BooleanField(("Seitenwechsel im Anschluss"), default=False)
     class Meta:
         verbose_name = ("Klausur-Thema")

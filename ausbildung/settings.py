@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+#            'init_command': 'SET foreign_key_checks = 0";',
         },
     },
 ]
@@ -131,3 +132,11 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL = "/pics/"
 MEDIA_ROOT = BASE_DIR / "static/pics"
+
+# import sys
+# if 'loaddata' in sys.argv:
+#     # only change this for loaddata command
+#     DATABASES['default']['OPTIONS'] = {
+# #        "init_command": "SET foreign_key_checks = 0;",
+#          "SET": "PRAGMA foreign_keys = OFF",
+#     }
