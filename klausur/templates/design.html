@@ -19,9 +19,9 @@
         <tboby>
         {% for frage in fragen %}
             <tr>
-                <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 1 %}">+</a></td>
-                <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 2 %}">-</a></td>
-                <td><a href="/admin/klausur/frage/{{frage.0.id}}/change/" target="_blank"><button type="button" class="btn btn-outline-primary">Bearb.</button></a></td>    
+                <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 1 %}"><i class="bi bi-arrow-down"></i></a></td>
+                <td><a class="link-underline-light" href="{% url 'richtung' frage.0.klausur.id frage.0.frage.id 2 %}"><i class="bi bi-arrow-up"></i></a></td>
+                <td><a href="/admin/klausur/frage/{{frage.0.id}}/change/" target="_blank"><i class="bi bi-wrench-adjustable"></i></a></td>    
                 <td title="{{frage.0.frage.frage}}">{{forloop.counter}}. ({{frage.0.position}}) {{frage.0}} {{frage.1}}</td>
                 {% comment %} <td><input class="px-auto form-check-input" type="checkbox" value="{{frage.id}}" id="checkbox{{frage.id}}" onchange="this.form.submit()" name="nl"></td> {% endcomment %}
                 <td><button type="submit" class="btn {% if frage.0.seitenwechsel %}btn-success{% else %}btn-light{% endif %} btn-sm" value="{{frage.0.id}}" name="nl" title="Nach der Frage einen Seitenwechsel einfügen">Neue Seite</button></td>
