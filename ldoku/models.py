@@ -15,5 +15,5 @@ class Eigene(models.Model):
     def __str__(self):
         return f"({self.user} - {self.gruppe})"
 
-    def get_absolute_url(self):
-        return reverse("Eigene_detail", kwargs={"pk": self.pk})
+    #def get_absolute_url(self):
+    #    return reverse("Eigene_detail", kwargs={"pk": self.pk})
