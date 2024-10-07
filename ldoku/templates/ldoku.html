@@ -1,0 +1,34 @@
+{% extends "start.html" %}
+{% load crispy_forms_tags %}
+
+{% block brand %}
+  Fehleintragungen
+{% endblock brand %}
+
+
+{% block content %}
+      <div class="container">
+        <div class="row justify-content-center align-items-center g-2">
+          <div class="col"><h1>Leistungsdoku</h1></div>
+          <form method="POST">
+            {% csrf_token %} {{form|crispy}}
+            <button type="submit" class="btn btn-outline-primary">
+              Speichern
+            </button>
+          </form>
+          <ul>
+            Eigene Gruppen
+            {% for gruppe in gruppen %}
+              <li>{{gruppe.gruppe}}</li>
+            {% endfor %}
+          </ul>
+          <ul>
+            Mangelhafte Eintragungen
+            {% for beschwerden in beschwerden %}
+              <li>{{beschwerden}}</li>
+            {% endfor %}
+          </ul>
+            </div>
+      </div>
+    {% endblock content %}
+   

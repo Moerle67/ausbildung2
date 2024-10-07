@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('klausur/', include('klausur.urls')),
     path('time/', include('times.urls')),
+    path('ldoku/', include('ldoku.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
