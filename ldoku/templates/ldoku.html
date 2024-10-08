@@ -1,6 +1,10 @@
 {% extends "start.html" %}
 {% load crispy_forms_tags %}
 
+{% block title %}
+  Fehlerhafte Eintragungen
+{% endblock title %}
+
 {% block brand %}
   Fehleintragungen
 {% endblock brand %}
@@ -13,13 +17,14 @@
           <form method="POST">
             {% csrf_token %} {{form|crispy}}
             <button type="submit" class="btn btn-outline-primary">
-              Speichern
+              Auswerten
             </button>
           </form>
           <ul>
-            Eigene Gruppen
+            Gruppen - {{teams}}
+
             {% for gruppe in gruppen %}
-              <li>{{gruppe.gruppe}}</li>
+              <li>{{gruppe}}</li>
             {% endfor %}
           </ul>
           <ul>
