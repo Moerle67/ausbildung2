@@ -9,3 +9,4 @@ db_200404.sqlite3
 db.sqlite_240403
 db.sqlite3
 db.sqlite3.bac
+*.json

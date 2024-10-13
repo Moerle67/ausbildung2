@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'klausur.apps.KlausurConfig',
     'times.apps.TimesConfig',
     'ldoku.apps.LdokuConfig',
+    'plan.apps.PlanConfig',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
