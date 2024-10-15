@@ -5,7 +5,7 @@ from .models import Gruppe, Block, Ausbilder, Daytime
 
 admin.site.register(Gruppe)
 admin.site.register(Ausbilder)
-# admin.site.register(Daytime)
+admin.site.register(Daytime)
 
 @admin.register(Block)
 class FrageBlock(admin.ModelAdmin):

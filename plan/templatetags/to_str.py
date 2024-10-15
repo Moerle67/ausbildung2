@@ -3,5 +3,5 @@ from django import template
 register = template.Library()
 
 @register.filter
-def get_at_index(list, index):
-    return list[int(index)]
+def to_str(value):
+    return str(value)

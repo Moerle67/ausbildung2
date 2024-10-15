@@ -1,5 +1,7 @@
 {% load get_at_index %}
 {% load get_aubi %}
+{% load to_str %}
+
 <!doctype html>
 <html lang="de">
 
@@ -40,15 +42,15 @@
             {% for gruppe in gruppen %}
                 {% for daytime in daytimes %}
                     <div class="row mb-3">
-                        <div class="row justify-content-center align-items-center g-2  ">
+                        <div class="row justify-content-center align-items-center g-2 ">
                             <div class="col-1 border border-1 border-black text-center me-3 shadow" style="background-color: #4CD8EB">
                                 {% if daytime == "am" %}
                                     {{gruppe.room}} - {{gruppe.short}}
                                 {% endif %}
                             </div>
-                            {% with year", " as temp %}
+                            {% with gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime as temp %}
                             <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #00EB85">{{temp}}<br />PV</div>
+                                style="background-color: #00EB85">{{temp|get_aubi}}<br />PV</div>
                             {% endwith %}   
                             <div class="col-2 border border-1 border-black text-center me-3 shadow"
                                 style="background-color: #DB3500">Briem<br />Anwendungsentwicklung</div>

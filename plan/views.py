@@ -13,12 +13,12 @@ def plan_grob(request, year, kw):
     lst_gruppe = Gruppe.objects.filter(activ=True)
     daytimes = ("am", "pm")
     content= {
-        "year": year,
-        "kw": kw,
+        "year": str(year),
+        "kw": str(kw),
         "gruppen": lst_gruppe,
         "daytimes": daytimes,
         "week": week,
-        "range1": range(5),
+        "range1": ("0", "1", "2", "3", "4"),
         "weekdays": ("Mo", "Di", "Mi", "Do", "Fr"),
     }
 
