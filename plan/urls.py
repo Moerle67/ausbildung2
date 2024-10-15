@@ -5,6 +5,6 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('', views.index, name = "index"),
+    path('', views.plan_grob, name = "plan_grob"),
     
 ]
