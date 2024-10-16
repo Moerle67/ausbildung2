@@ -11,6 +11,7 @@ def get_aubi(temp):
     kw = int(liste[2])
     day = int(liste[3])
     daytime = Daytime.objects.get(short=liste[4].strip())
-    block = Block.objects.get(group=group, year=year, kw=kw, day=day, daytime=daytime)
+    block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
+    print("ga", len(block))
     # print(block)
     return block
