@@ -48,9 +48,11 @@
                                     {{gruppe.room}} - {{gruppe.short}}
                                 {% endif %}
                             </div>
-                            {% with gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime|add:",aubi" as temp %}
-                            <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #00EB85">{{temp|get_aubi}}<br />PV</div>
+                            {% with temp=gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime %}
+                               {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
+                                    <div class="col-2 border border-1 border-black text-center me-3 shadow"
+                                    style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br />{{temp3|get_aubi}}</div>
+                                {% endwith %}
                             {% endwith %}   
                             <div class="col-2 border border-1 border-black text-center me-3 shadow"
                                 style="background-color: #DB3500">Briem<br />Anwendungsentwicklung</div>
