@@ -48,7 +48,7 @@
                                     {{gruppe.room}} - {{gruppe.short}}
                                 {% endif %}
                             </div>
-                            {% with gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime as temp %}
+                            {% with gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime|add:",aubi" as temp %}
                             <div class="col-2 border border-1 border-black text-center me-3 shadow"
                                 style="background-color: #00EB85">{{temp|get_aubi}}<br />PV</div>
                             {% endwith %}   
