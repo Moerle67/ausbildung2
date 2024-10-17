@@ -18,7 +18,7 @@ def plan_grob(request, year, kw):
         "gruppen": lst_gruppe,
         "daytimes": daytimes,
         "week": week,
-        "range1": ("0", "1", "2", "3", "4"),
+        "days": ("0", "1", "2", "3", "4"),
         "weekdays": ("Mo", "Di", "Mi", "Do", "Fr"),
     }
 

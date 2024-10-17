@@ -32,7 +32,7 @@
                 <div class="row justify-content-center align-items-center g-2 mb-3 fs-4">
                     <div class="col-1 border border-2 border-black text-center me-3 shadow"
                         style="background-color: #EB362C">{{kw}} - {{year}}</div>
-                    {% for day in range1 %}
+                    {% for day in days %}
                         <div class="col-2 border border-2 border-black text-center me-3 shadow"
                             style="background-color: #4CD8EB">{{weekdays|get_at_index:day}} {{week|get_at_index:day }}</div>
                     {% endfor %}
@@ -48,25 +48,14 @@
                                     {{gruppe.room}} - {{gruppe.short}}
                                 {% endif %}
                             </div>
-                            {% with temp=gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime %}
-                               {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
-                                    <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                    style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br />{{temp3|get_aubi}}</div>
-                                {% endwith %}
-                            {% endwith %}   
-                            <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #DB3500">Briem<br />Anwendungsentwicklung</div>
-                            <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #DB3500">Briem<br />Anwendungsentwicklung</div>    
-                            <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #DB5B00">Müller<br />
-                                    <select  name="" id=""  style="background-color: #DB5B00" >
-                                        <option selected>BWL</option>
-                                        <option value="">AWL</option>
-                                    </select>
-                            </div>
-                            <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                style="background-color: #DB3500">Briem<br />Anwendungsentwickung</div>
+                            {% for day in days %}
+                                {% with temp=gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:'0'|add:","|add:daytime %}
+                                {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
+                                        <div class="col-2 border border-1 border-black text-center me-3 shadow"
+                                        style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br />{{temp3|get_aubi}}</div>
+                                    {% endwith %}
+                                {% endwith %}   
+                            {% endfor %}
                         </div>
                     </div>
                 {% endfor %}    
