@@ -11,7 +11,7 @@ def get_aubi(temp):
     kw = int(liste[2])
     day = int(liste[3])
     switch_code = liste[5]
-    # Tageszeit ganstags abprüfen
+    # Tageszeit ganztags abprüfen
     daytime = Daytime.objects.get(short="gt")
     block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block)==0:
