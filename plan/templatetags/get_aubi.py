@@ -10,10 +10,13 @@ def get_aubi(temp):
     year = int(liste[1])
     kw = int(liste[2])
     day = int(liste[3])
-    daytime = Daytime.objects.get(short=liste[4].strip())
     switch_code = liste[5]
-    #switch_code = "aubi"
+    # Tageszeit ganstags abprüfen
+    daytime = Daytime.objects.get(short="gt")
     block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
+    if len(block)==0:
+        daytime = Daytime.objects.get(short=liste[4].strip())
+        block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block) > 0:   
         ds = list(block)[-1]               # mindestens ein Treffer
         if switch_code == "aubi":

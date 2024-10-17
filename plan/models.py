@@ -33,7 +33,22 @@ class Ausbilder(models.Model):
         return f"{self.user.first_name} {self.user.last_name} ({self.user})"
     def get_absolute_url(self):
         return reverse("Ausbilderdetail", kwargs={"pk": self.pk})
+
+class Team(models.Model):
+
     
+
+    class Meta:
+        verbose_name = ("Team")
+        verbose_name_plural = ("Teams")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("Team_detail", kwargs={"pk": self.pk})
+ 
+
 class Gruppe(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50)
     short = models.CharField(("Kürzel"), max_length=10)
