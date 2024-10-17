@@ -23,11 +23,10 @@ class Ausbilder(models.Model):
     color = models.CharField(("Farbe"), max_length=20)
     beschreibung = models.TextField("Beschreibung", null=True, blank=True)
     
-
     class Meta:
         verbose_name = ("Ausbilder")
         verbose_name_plural = ("Ausbilder")
-        
+        ordering = ['user']
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} ({self.user})"
@@ -53,19 +52,22 @@ class Gruppe(models.Model):
 
 class Team(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50)
-    members = models.ForeignKey(Ausbilder, verbose_name=("Mitglieder"), on_delete=models.CASCADE)
-    gruppen = models.ForeignKey(Gruppe, verbose_name=("Gruppen"), on_delete=models.CASCADE)
+    comment = models.TextField(("Beschreibung"), null=True, blank=True)
+    members = models.ManyToManyField(Ausbilder, verbose_name=("Ausbilder"))
+    groups = models.ManyToManyField(Gruppe, verbose_name=("Gruppen"))
+    activ = models.BooleanField(("Aktiv"), default=True)
 
     class Meta:
         verbose_name = ("Team")
         verbose_name_plural = ("Teams")
+        ordering = ['name']
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse("Team_detail", kwargs={"pk": self.pk})
- 
+
 class Block(models.Model):
     group = models.ForeignKey(Gruppe, verbose_name=("Gruppe"), on_delete=models.CASCADE)
     year = models.IntegerField(("Jahr"))
