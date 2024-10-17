@@ -34,21 +34,6 @@ class Ausbilder(models.Model):
     def get_absolute_url(self):
         return reverse("Ausbilderdetail", kwargs={"pk": self.pk})
 
-class Team(models.Model):
-
-    
-
-    class Meta:
-        verbose_name = ("Team")
-        verbose_name_plural = ("Teams")
-
-    def __str__(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse("Team_detail", kwargs={"pk": self.pk})
- 
-
 class Gruppe(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50)
     short = models.CharField(("Kürzel"), max_length=10)
@@ -65,7 +50,22 @@ class Gruppe(models.Model):
 
     def get_absolute_url(self):
         return reverse("Gruppe_detail", kwargs={"pk": self.pk})
-    
+
+class Team(models.Model):
+    name = models.CharField(("Bezeichnung"), max_length=50)
+    members = models.ForeignKey(Ausbilder, verbose_name=("Mitglieder"), on_delete=models.CASCADE)
+    gruppen = models.ForeignKey(Gruppe, verbose_name=("Gruppen"), on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = ("Team")
+        verbose_name_plural = ("Teams")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("Team_detail", kwargs={"pk": self.pk})
+ 
 class Block(models.Model):
     group = models.ForeignKey(Gruppe, verbose_name=("Gruppe"), on_delete=models.CASCADE)
     year = models.IntegerField(("Jahr"))
