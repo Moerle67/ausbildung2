@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import datetime
 
-from .models import Gruppe,Team
+from .models import Gruppe,Team, Block
 # Create your views here.
 def plan_grob(request, team, year, kw):
     team = Team.objects.get(id=team)
@@ -12,6 +12,7 @@ def plan_grob(request, team, year, kw):
         week.append(r.strftime('%d.%m.'))
         r += datetime.timedelta(days=1)
     lst_gruppe = team.groups.filter(activ=True)
+    
     daytimes = ("am", "pm")
     content= {
         "team": team,

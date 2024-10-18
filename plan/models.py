@@ -22,7 +22,8 @@ class Ausbilder(models.Model):
     user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.RESTRICT)
     color = models.CharField(("Farbe"), max_length=20)
     beschreibung = models.TextField("Beschreibung", null=True, blank=True)
-    
+    activ = models.BooleanField(("Aktiv"), default=True)
+
     class Meta:
         verbose_name = ("Ausbilder")
         verbose_name_plural = ("Ausbilder")

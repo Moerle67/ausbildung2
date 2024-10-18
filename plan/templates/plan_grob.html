@@ -1,6 +1,7 @@
-{% load get_at_index %}
+{% load utils %}
+{% comment %} {% load get_at_index %}
 {% load get_aubi %}
-{% load to_str %}
+{% load to_str %} {% endcomment %}
 
 <!doctype html>
 <html lang="de">
@@ -50,15 +51,15 @@
                             </div>
                             {% for day in days %}
                                 {% with temp=gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:day|add:","|add:daytime %}
-                                {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
+                                    {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
                                         <div class="col-2 border border-1 border-black text-center me-3 shadow"
-                                        style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br /><input type="text" value="{{temp3|get_aubi}}"></div>
+                                        style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br /><input type="text" style="background-color: {{temp2|get_aubi}}" value="{{temp3|get_aubi}}"></div>
                                     {% endwith %}
                                 {% endwith %}   
                             {% endfor %}
                         </div>
                     </div>
-                {% endfor %}    
+                {% endfor %}
                 <hr />
             {% endfor %}
             {% endblock content %}
