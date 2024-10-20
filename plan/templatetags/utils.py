@@ -38,12 +38,20 @@ def get_aubi(temp):
 def to_str(value):
     return str(value)
 
-
-def find_ready(value):
+@register.filter
+def get_ready_aubi(value):
 # Ausbilder suchen, die noch zur Verfügung stehen
-    lst_aubi = Team.members.filter(activ=True)
+    lst_param = value.split(',')
+    team_ds = Team.objects.get(name=lst_param[4])
+    lst_aubi = team_ds.members.filter(activ=True)
     lst_aubi_ready = []
-    for day in range(0):
-        lst_aubi_ready_day=[]
-        for aubi in lst_aubi_ready:
-            ds = Block.objects.filter()
+    daytime_ds = Daytime.objects.get(short=lst_param[3])
+    for aubi in lst_aubi:
+        # Entsprechende Tageszeit
+        ds1 = Block.objects.filter(year=int(lst_param[0]), kw=int(lst_param[1]), day=int(lst_param[2]), daytime=daytime_ds, teacher = aubi)
+        # Ganztags
+        ds2 = Block.objects.filter(year=int(lst_param[0]), kw=int(lst_param[1]), day=int(lst_param[2]), daytime=Daytime.objects.get(short="gt"), teacher = aubi)
+        if len(ds1)==0 and len(ds2)==0:              # Noch kein Einsatz
+            lst_aubi_ready.append(aubi)
+    
+    return lst_aubi_ready

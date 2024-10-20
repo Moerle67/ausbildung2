@@ -62,6 +62,26 @@
                 {% endfor %}
                 <hr />
             {% endfor %}
+            <div class="row mb-3">
+                {% for daytime in daytimes %}
+                    <div class="row justify-content-center align-items-center g-2 ">
+                        <div class="col-1 border border-2 border-black text-center me-3 shadow"
+                        style="background-color: #EB362C">Ausbilder {{daytime}}</div>                    
+
+                        {% for day in days %}
+
+                        <div class="col-2 border border-2 border-black text-center me-3 shadow"
+                            style="background-color: #4CD8EB">
+                            {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
+                               {% for ma in temp|get_ready_aubi %}
+                                    <button>{{ma.user}}</button>
+                               {% endfor %}
+                            {% endwith %}
+                        </div>
+                        {% endfor%}
+                    </div>
+                {% endfor %}               
+            </div>
             {% endblock content %}
         </div>
     </main>
