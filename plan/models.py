@@ -90,4 +90,26 @@ class Block(models.Model):
         return reverse("Block_detail", kwargs={"pk": self.pk})
 
 
+class AubiBlock(models.Model):
+    WD_CHOICES = (
+        (0, 'Montag'),
+        (1, 'Dienstag'),
+        (2, 'Mittwoch'),
+        (3, 'Donnerstag'),
+        (4, 'Freitag')
+    )
+    aubi = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
+    date = models.DateField(("Datum"), auto_now=False, auto_now_add=False, null=True, blank=True)
+    wochentags = models.IntegerField(("Wochentag)"), choices=WD_CHOICES, null=True, blank=True)
+    daytime = models.ForeignKey(Daytime, verbose_name=("Tageszeit"), on_delete=models.CASCADE)
+    comment = models.TextField(("Kommentar"), null=True, blank=True)
+    class Meta:
+        verbose_name = ("AubiBlock")
+        verbose_name_plural = ("AubiBlocks")
+
+    def __str__(self):
+        return f"{self.aubi} ({"" if self.date is None else self.date}{"" if self.wochentags is None else self.wochentags} - {self.daytime.description})"
+
+    def get_absolute_url(self):
+        return reverse("AubiBlock_detail", kwargs={"pk": self.pk})
 
