@@ -35,7 +35,10 @@
                     {% with temp=gruppe.name|add:","|add:year|add:","|add:kw|add:","|add:day|add:","|add:daytime %}
                         {% with temp1=temp|add:",aubi"  temp2=temp|add:",color" temp3=temp|add:",fach"%}
                             <div class="col-2 border border-1 border-black text-center me-3 shadow" ondragover="allowDrop(event)" ondrop="drop(event, '{{temp}}', {{team.id}})"
-                                style="background-color: {{temp2|get_aubi}}">{{temp1|get_aubi}}<br /><input type="text" style="background-color: {{temp2|get_aubi}}" value="{{temp3|get_aubi}}">
+                                style="background-color: {{temp2|get_aubi}}">
+                                {% if daytime != "pm" or day != "4" %}
+                                    {{temp1|get_aubi}}<br /><input type="text" style="background-color: {{temp2|get_aubi}}" value="{{temp3|get_aubi}}">
+                                {% endif %}
                             </div>
                         {% endwith %}
                     {% endwith %}   
@@ -50,15 +53,18 @@
     {% for daytime in daytimes %}
         <div class="row justify-content-center align-items-center g-2 ">
             <div class="col-1 border border-2 border-black text-center me-3 shadow"
-            style="background-color: lightgreen">Ausbilder {{daytime}}</div>                    
+            style="background-color: lightgreen">Ausbilder frei {{daytime}}</div>                    
             {% for day in days %}
-                <div class="col-2 border border-2 border-black text-center me-3 shadow"
+                <div class="col-2 border border-2 border-black
+                    text-center me-3 shadow"
                     style="background-color: #4CD8EB">
-                    {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
-                        {% for ma in temp|get_ready_aubi %}
-                                <button id="{{ma.id}}" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
-                        {% endfor %}
-                    {% endwith %}
+                    {% if daytime != "pm" or day != "4" %}
+                        {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
+                            {% for ma in temp|get_ready_aubi %}
+                                    <button id="{{ma.id}}" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
+                            {% endfor %}
+                        {% endwith %}
+                    {% endif %}
                 </div>
             {% endfor%}
         </div>
@@ -68,7 +74,7 @@
 <div class="row mb-3">
     <div class="row justify-content-center align-items-center g-2 ">
         <div class="col-1 border border-2 border-black text-center me-3 shadow"
-            style="background-color: pink">Ausbilder {{daytime}}
+            style="background-color: pink">Abwesend{{daytime}}
         </div>                    
         {% for day in days %}
             <div class="col-2 border border-2 border-black text-center me-3 shadow"
