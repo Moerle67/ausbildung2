@@ -1,6 +1,6 @@
 from django import template
-from ..models import Block, Gruppe, Daytime, Team
-
+from ..models import Block, Gruppe, Daytime, Team, AubiBlock
+import datetime
 
 register = template.Library()
 
@@ -40,18 +40,55 @@ def to_str(value):
 
 @register.filter
 def get_ready_aubi(value):
+    IDX_YEAR = 0
+    IDX_KW = 1
+    IDX_DAY = 2
+    IDX_DAYTIME = 3
+    IDX_TEAM = 4
+
 # Ausbilder suchen, die noch zur Verfügung stehen
     lst_param = value.split(',')
-    team_ds = Team.objects.get(name=lst_param[4])
+    team_ds = Team.objects.get(name=lst_param[IDX_TEAM])
     lst_aubi = team_ds.members.filter(activ=True)
     lst_aubi_ready = []
-    daytime_ds = Daytime.objects.get(short=lst_param[3])
+    daytime_ds = Daytime.objects.get(short=lst_param[IDX_DAYTIME])
     for aubi in lst_aubi:
         # Entsprechende Tageszeit
-        ds1 = Block.objects.filter(year=int(lst_param[0]), kw=int(lst_param[1]), day=int(lst_param[2]), daytime=daytime_ds, teacher = aubi)
+        ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime_ds, teacher = aubi)
         # Ganztags
-        ds2 = Block.objects.filter(year=int(lst_param[0]), kw=int(lst_param[1]), day=int(lst_param[2]), daytime=Daytime.objects.get(short="gt"), teacher = aubi)
+        ds2 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=Daytime.objects.get(short="gt"), teacher = aubi)
         if len(ds1)==0 and len(ds2)==0:              # Noch kein Einsatz
             lst_aubi_ready.append(aubi)
     
     return lst_aubi_ready
+
+@register.filter
+def get_block_aubi(value):
+    IDX_YEAR = 0
+    IDX_KW = 1
+    IDX_DAY = 2
+    IDX_TEAM = 3
+
+    lst_param = value.split(',')
+    d = f"{int(lst_param[IDX_YEAR])}-W{int(lst_param[IDX_KW])}"
+    r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
+    r += datetime.timedelta(days=int(lst_param[IDX_DAY]))
+    team_ds = Team.objects.get(name=lst_param[IDX_TEAM])
+    lst_aubi = team_ds.members.filter(activ=True)
+    lst_aubi_block = []
+
+    for aubi in lst_aubi:
+        # Entsprechenden Wochentag
+        ds1 = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY])
+
+        # Entsprechendes Datum
+        ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
+        print(ds2)
+        if len(ds1) > 0:
+            ds = list(ds1)[-1]
+            lst_aubi_block.append((aubi,ds.daytime.short))
+        elif len(ds2) > 0:
+            ds = list(ds2)[-1]
+            lst_aubi_block.append((aubi,ds.daytime.short))
+
+    return lst_aubi_block

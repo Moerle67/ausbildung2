@@ -100,7 +100,7 @@ class AubiBlock(models.Model):
     )
     aubi = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
     date = models.DateField(("Datum"), auto_now=False, auto_now_add=False, null=True, blank=True)
-    wochentags = models.IntegerField(("Wochentag)"), choices=WD_CHOICES, null=True, blank=True)
+    day = models.IntegerField(("Wochentag)"), choices=WD_CHOICES, null=True, blank=True)
     daytime = models.ForeignKey(Daytime, verbose_name=("Tageszeit"), on_delete=models.CASCADE)
     comment = models.TextField(("Kommentar"), null=True, blank=True)
     class Meta:
@@ -108,7 +108,7 @@ class AubiBlock(models.Model):
         verbose_name_plural = ("AubiBlocks")
 
     def __str__(self):
-        return f"{self.aubi} ({"" if self.date is None else self.date}{"" if self.wochentags is None else self.wochentags} - {self.daytime.description})"
+        return f"{self.aubi} ({'' if self.date is None else self.date}{'' if self.day is None else self.day} - {self.daytime.description})"
 
     def get_absolute_url(self):
         return reverse("AubiBlock_detail", kwargs={"pk": self.pk})
