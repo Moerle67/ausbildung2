@@ -35,7 +35,7 @@ class Ausbilder(models.Model):
         return reverse("Ausbilderdetail", kwargs={"pk": self.pk})
 
 class Gruppe(models.Model):
-    name = models.CharField(("Bezeichnung"), max_length=50)
+    name = models.CharField(("Bezeichnung"), max_length=50, unique=True)
     short = models.CharField(("Kürzel"), max_length=10)
     room = models.CharField(("Raum"), max_length=10)
     activ = models.BooleanField(("Aktiv"), default = True)
@@ -52,7 +52,7 @@ class Gruppe(models.Model):
         return reverse("Gruppe_detail", kwargs={"pk": self.pk})
 
 class Team(models.Model):
-    name = models.CharField(("Bezeichnung"), max_length=50)
+    name = models.CharField(("Bezeichnung"), max_length=50, unique=True)
     comment = models.TextField(("Beschreibung"), null=True, blank=True)
     members = models.ManyToManyField(Ausbilder, verbose_name=("Ausbilder"))
     groups = models.ManyToManyField(Gruppe, verbose_name=("Gruppen"))
@@ -75,8 +75,8 @@ class Block(models.Model):
     kw = models.IntegerField(("Kalenderwoche"))
     day = models.IntegerField(("Tag"))
     daytime = models.ForeignKey(Daytime, verbose_name=("Tageszeit"), on_delete=models.CASCADE)
-    teacher = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
-    content = models.CharField(("Fach"), max_length=50)
+    teacher = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE, null=True, blank=True)
+    content = models.CharField(("Fach"), max_length=50, null=True, blank=True)
 
     class Meta:
         verbose_name = ("Block")
@@ -84,7 +84,7 @@ class Block(models.Model):
         ordering = ["group", "year","kw", "day", "daytime"]
 
     def __str__(self):
-        return f"{self.group.short} - {self.year}/{self.kw}/{self.day}/{self.daytime.short} - {self.teacher.user.last_name}"
+        return f"{self.group.short} - {self.year}/{self.kw}/{self.day}/{self.daytime.short} - {'' if self.teacher is None else self.teacher.user.last_name}"
 
     def get_absolute_url(self):
         return reverse("Block_detail", kwargs={"pk": self.pk})

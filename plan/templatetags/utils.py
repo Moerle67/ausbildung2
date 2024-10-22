@@ -28,7 +28,7 @@ def get_aubi(temp):
         if switch_code == "aubi":
             return ds.teacher   # letzter Eintrag
         elif switch_code == "color":
-            return ds.teacher.color
+            return "white" if ds.teacher is None else ds.teacher.color
         elif switch_code == "fach":
             return ds.content
     else:

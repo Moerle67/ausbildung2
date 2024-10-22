@@ -6,5 +6,5 @@ from . import views
 
 urlpatterns = [
     path('<int:team>/<int:year>/<int:kw>', views.plan_grob, name = "plan_grob"),
-    
+    path('block/<str:var>/<int:aubi_id>/<int:team>', views.block, name='block'),
 ]

@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import datetime
 
-from .models import Gruppe,Team, Block
+from .models import Gruppe,Team, Block, Daytime, Ausbilder
 # Create your views here.
 def plan_grob(request, team, year, kw):
     team = Team.objects.get(id=team)
@@ -24,5 +24,21 @@ def plan_grob(request, team, year, kw):
         "days": ("0", "1", "2", "3", "4"),
         "weekdays": ("Mo", "Di", "Mi", "Do", "Fr"),
     }
-
     return render(request, "plan_grob.html", content)
+
+def block(request, var, aubi_id, team):
+    var_lst = (var).split(',')
+    gruppe_ds = Gruppe.objects.get(name=var_lst[0])
+    teacher_ds = Ausbilder.objects.get(id=aubi_id)
+
+    ds, fail = Block.objects.get_or_create(
+        group=gruppe_ds, 
+        year=int(var_lst[1]), 
+        kw = int(var_lst[2]), 
+        day = int(var_lst[3]), 
+        daytime = Daytime.objects.get(short=var_lst[4]))
+
+    ds.teacher = teacher_ds
+    ds.save()
+
+    return redirect(f"/plan/{team}/{var_lst[1]}/{var_lst[2]}")
