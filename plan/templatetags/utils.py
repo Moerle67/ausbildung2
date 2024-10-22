@@ -20,6 +20,7 @@ def get_aubi(temp):
     daytime = Daytime.objects.get(short="gt")
     block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block)==0:
+        # Entsprechende Tageszeit prüfen
         daytime = Daytime.objects.get(short=liste[4].strip())
         block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block) > 0:   
@@ -53,6 +54,25 @@ def get_ready_aubi(value):
     lst_aubi_ready = []
     daytime_ds = Daytime.objects.get(short=lst_param[IDX_DAYTIME])
     for aubi in lst_aubi:
+        ## Prüfung allgemeine Abwesenheit
+        # Wochentag
+        ds = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY])
+        if len(ds)>0:       
+            continue    
+        # Datum ermitteln
+        d = f"{int(lst_param[IDX_YEAR])}-W{int(lst_param[IDX_KW])}"
+        r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
+        r += datetime.timedelta(days=int(lst_param[IDX_DAY]))
+        # Ganztags
+        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=Daytime.objects.get(short="gt"))
+        if len(ds)>0:       
+            continue    
+        # Tageszeit
+        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=Daytime.objects.get(short=lst_param[IDX_DAYTIME]))
+        if len(ds)>0:       
+            continue 
+        
+        # Aktuellen Ausbildungsplan prüfen    
         # Entsprechende Tageszeit
         ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime_ds, teacher = aubi)
         # Ganztags
@@ -83,7 +103,6 @@ def get_block_aubi(value):
 
         # Entsprechendes Datum
         ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
-        print(ds2)
         if len(ds1) > 0:
             ds = list(ds1)[-1]
             lst_aubi_block.append((aubi,ds.daytime.short))
