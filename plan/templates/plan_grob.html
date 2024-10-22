@@ -15,6 +15,7 @@
     <!-- Bootstrap CSS v5.2.1 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
+    <script src="{% static 'js/plan_block.js'%}">    
 </head>
 
 <body>
@@ -92,7 +93,7 @@
                             style="background-color: #4CD8EB">
                             {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:team.name %}
                                {% for ma in temp|get_block_aubi %}
-                                    <button>{{ma.0.user}}({{ma.1}})</button>
+                                    <button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button>
                                {% endfor %}
                             {% endwith %}
                         </div>

@@ -71,7 +71,7 @@ def get_ready_aubi(value):
         ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=Daytime.objects.get(short=lst_param[IDX_DAYTIME]))
         if len(ds)>0:       
             continue 
-        
+
         # Aktuellen Ausbildungsplan prüfen    
         # Entsprechende Tageszeit
         ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime_ds, teacher = aubi)
@@ -105,9 +105,9 @@ def get_block_aubi(value):
         ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
         if len(ds1) > 0:
             ds = list(ds1)[-1]
-            lst_aubi_block.append((aubi,ds.daytime.short))
+            lst_aubi_block.append((aubi,ds.daytime.short,ds.comment))
         elif len(ds2) > 0:
             ds = list(ds2)[-1]
-            lst_aubi_block.append((aubi,ds.daytime.short))
+            lst_aubi_block.append((aubi,ds.daytime.short,ds.comment))
 
     return lst_aubi_block
