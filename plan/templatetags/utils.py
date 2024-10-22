@@ -16,13 +16,10 @@ def get_aubi(temp):
     kw = int(liste[2])
     day = int(liste[3])
     switch_code = liste[5]
-    # Tageszeit ganztags abprüfen
-    daytime = Daytime.objects.get(short="gt")
+
+    # Entsprechende Tageszeit prüfen
+    daytime = Daytime.objects.get(short=liste[4].strip())
     block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
-    if len(block)==0:
-        # Entsprechende Tageszeit prüfen
-        daytime = Daytime.objects.get(short=liste[4].strip())
-        block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block) > 0:   
         ds = list(block)[-1]               # mindestens ein Treffer
         if switch_code == "aubi":
@@ -75,9 +72,7 @@ def get_ready_aubi(value):
         # Aktuellen Ausbildungsplan prüfen    
         # Entsprechende Tageszeit
         ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime_ds, teacher = aubi)
-        # Ganztags
-        ds2 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=Daytime.objects.get(short="gt"), teacher = aubi)
-        if len(ds1)==0 and len(ds2)==0:              # Noch kein Einsatz
+        if len(ds1)==0:              # Noch kein Einsatz
             lst_aubi_ready.append(aubi)
     
     return lst_aubi_ready

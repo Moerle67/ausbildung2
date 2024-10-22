@@ -61,7 +61,7 @@
                     {% if daytime != "pm" or day != "4" %}
                         {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
                             {% for ma in temp|get_ready_aubi %}
-                                    <button id="{{ma.id}}" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
+                                    <button id="{{ma.id}}" style="background-color: {{ma.color}};" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
                             {% endfor %}
                         {% endwith %}
                     {% endif %}
