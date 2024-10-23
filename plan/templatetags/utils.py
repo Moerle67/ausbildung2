@@ -1,5 +1,5 @@
 from django import template
-from ..models import Block, Gruppe, Daytime, Team, AubiBlock
+from ..models import Block, Gruppe, Team, AubiBlock
 import datetime
 
 register = template.Library()
