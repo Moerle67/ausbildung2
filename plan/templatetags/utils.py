@@ -18,7 +18,7 @@ def get_aubi(temp):
     switch_code = liste[5]
 
     # Entsprechende Tageszeit prüfen
-    daytime = Daytime.objects.get(short=liste[4].strip())
+    daytime = liste[4]
     block = Block.objects.filter(group=group, year=year, kw=kw, day=day, daytime=daytime)
     if len(block) > 0:   
         ds = list(block)[-1]               # mindestens ein Treffer
@@ -49,7 +49,7 @@ def get_ready_aubi(value):
     team_ds = Team.objects.get(name=lst_param[IDX_TEAM])
     lst_aubi = team_ds.members.filter(activ=True)
     lst_aubi_ready = []
-    daytime_ds = Daytime.objects.get(short=lst_param[IDX_DAYTIME])
+    daytime = lst_param[IDX_DAYTIME]
     for aubi in lst_aubi:
         ## Prüfung allgemeine Abwesenheit
         # Wochentag
@@ -61,17 +61,17 @@ def get_ready_aubi(value):
         r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
         r += datetime.timedelta(days=int(lst_param[IDX_DAY]))
         # Ganztags
-        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=Daytime.objects.get(short="gt"))
+        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime="gt")
         if len(ds)>0:       
             continue    
         # Tageszeit
-        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=Daytime.objects.get(short=lst_param[IDX_DAYTIME]))
+        ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=daytime)
         if len(ds)>0:       
             continue 
 
         # Aktuellen Ausbildungsplan prüfen    
         # Entsprechende Tageszeit
-        ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime_ds, teacher = aubi)
+        ds1 = Block.objects.filter(year=int(lst_param[IDX_YEAR]), kw=int(lst_param[IDX_KW]), day=int(lst_param[IDX_DAY]), daytime=daytime, teacher = aubi)
         if len(ds1)==0:              # Noch kein Einsatz
             lst_aubi_ready.append(aubi)
     
@@ -100,9 +100,9 @@ def get_block_aubi(value):
         ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
         if len(ds1) > 0:
             ds = list(ds1)[-1]
-            lst_aubi_block.append((aubi,ds.daytime.short,ds.comment))
+            lst_aubi_block.append((aubi,ds.daytime,ds.comment))
         elif len(ds2) > 0:
             ds = list(ds2)[-1]
-            lst_aubi_block.append((aubi,ds.daytime.short,ds.comment))
+            lst_aubi_block.append((aubi,ds.daytime,ds.comment))
 
     return lst_aubi_block

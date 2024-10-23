@@ -1,10 +1,14 @@
-from django.shortcuts import render, redirect
+## todo 
+# Models Daytime
+# Liste Plan
+
+from django.shortcuts import render, get_object_or_404, redirect
 import datetime
 
 from .models import Gruppe,Team, Block, Daytime, Ausbilder
 # Create your views here.
 def plan_grob(request, team, year, kw):
-    team = Team.objects.get(id=team)
+    team = get_object_or_404(Team, id=team)
     d = f"{year}-W{kw}"
     r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
     week = []
@@ -12,8 +16,13 @@ def plan_grob(request, team, year, kw):
         week.append(r.strftime('%d.%m.'))
         r += datetime.timedelta(days=1)
     lst_gruppe = team.groups.filter(activ=True)
-    
     daytimes = ("am", "pm")
+
+    # Liste füllen
+    for daytime in daytimes:
+        for day in range(5):
+            None
+
     content= {
         "team": team,
         "year": str(year),
@@ -36,7 +45,7 @@ def block(request, var, aubi_id, team):
         year=int(var_lst[1]), 
         kw = int(var_lst[2]), 
         day = int(var_lst[3]), 
-        daytime = Daytime.objects.get(short=var_lst[4]))
+        daytime = var_lst[4])
 
     ds.teacher = teacher_ds
     ds.save()
