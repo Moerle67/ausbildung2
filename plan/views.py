@@ -32,8 +32,6 @@ def plan_grob(request, team, year, kw):
                     lst_day.append((("--------", "", "white"), day))
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, daytime))
-
-    print(lst_group)
     content= {
         "team": team,
         "year": str(year),
