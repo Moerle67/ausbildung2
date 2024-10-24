@@ -46,7 +46,8 @@ class Gruppe(models.Model):
         ordering = ["-activ", "name"]
 
     def __str__(self):
-        return self.name
+        aktiv = "aktiv" if self.activ else "inactiv"
+        return f"{self.name} ({aktiv})"
 
     def get_absolute_url(self):
         return reverse("Gruppe_detail", kwargs={"pk": self.pk})

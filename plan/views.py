@@ -33,7 +33,6 @@ def plan_grob(request, team, year, kw):
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, gruppe))
 
-    print(lst_group)
     content= {
         "liste": lst_group,
         "team": team,
@@ -47,19 +46,18 @@ def plan_grob(request, team, year, kw):
     }
     return render(request, "plan_light.html", content)
 
-def block(request, var, aubi_id, team):
-    var_lst = (var).split(',')
-    gruppe_ds = Gruppe.objects.get(name=var_lst[0])
+def block(request, group, year, kw, day, daytime, aubi_id, team):
+    gruppe_ds = Gruppe.objects.get(id=group)
     teacher_ds = Ausbilder.objects.get(id=aubi_id)
 
     ds, fail = Block.objects.get_or_create(
         group=gruppe_ds, 
-        year=int(var_lst[1]), 
-        kw = int(var_lst[2]), 
-        day = int(var_lst[3]), 
-        daytime = var_lst[4])
+        year=year, 
+        kw = kw, 
+        day = day, 
+        daytime = daytime)
 
     ds.teacher = teacher_ds
     ds.save()
 
-    return redirect(f"/plan/{team}/{var_lst[1]}/{var_lst[2]}")
+    return redirect(f"/plan/{team}/{year}/{kw}")
