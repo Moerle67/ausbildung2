@@ -69,3 +69,16 @@ def set_content(request, id, content, team, year, kw):
     ds.save()
 
     return redirect(f"/plan/{team}/{year}/{kw}")
+
+def set_kw(request, team, year, kw, code):
+    if code == 1:
+        kw -= 1
+        if kw==0:
+            year -= 1
+            kw = 53
+    else:
+        kw +=1
+        if kw==54:
+            year += 1
+            kw = 1        
+    return redirect(f"/plan/{team}/{year}/{kw}")
