@@ -58,6 +58,7 @@ def block(request, group, year, kw, day, daytime, aubi_id, team):
         daytime = daytime)
 
     ds.teacher = teacher_ds
+    ds.content = ""
     ds.save()
 
     return redirect(f"/plan/{team}/{year}/{kw}")
