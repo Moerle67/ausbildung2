@@ -27,7 +27,7 @@ def plan_grob(request, team, year, kw):
             for day in range(5):
                 ds = Block.objects.filter(group=gruppe, year=year, kw=kw, day=day, daytime=daytime)
                 if len(ds) != 0:   # Datensatz vorhanden
-                    lst_day.append(((ds[0].teacher, ds[0].content, ds[0].teacher.color), day))
+                    lst_day.append((ds[0], day))
                 else:
                     lst_day.append((("--------", "", "white"), day))
             lst_daytime.append((lst_day, daytime))

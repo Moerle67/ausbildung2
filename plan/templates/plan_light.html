@@ -35,9 +35,9 @@
                     <div class="col-2 border border-1 border-black text-center me-3 shadow" 
                         ondragover="allowDrop(event)" 
                         ondrop="drop(event, {{gruppe.1.id}}, {{year}}, {{kw}}, {{day.1}}, '{{daytime.1}}', {{team.id}})"
-                        style="background-color: {{day.0.2}}">
+                        style="background-color: {{day.0.teacher.color}}">
                         {% if daytime.1 != "pm" or day != "4" %}
-                            {{day.0.0}}<br /><input type="text" style="background-color: {{day.0.2}}" value="{{day.0.1}}">
+                            {{day.0.teacher}}<br /><input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}">
                         {% endif %}
                     </div>
                 {% endfor %}
