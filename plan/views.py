@@ -61,3 +61,10 @@ def block(request, group, year, kw, day, daytime, aubi_id, team):
     ds.save()
 
     return redirect(f"/plan/{team}/{year}/{kw}")
+
+def set_content(request, id, content, team, year, kw):
+    ds = Block.objects.get(id=id)
+    ds.content = content
+    ds.save()
+
+    return redirect(f"/plan/{team}/{year}/{kw}")
