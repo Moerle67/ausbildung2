@@ -20,9 +20,24 @@
 <body>
     <header>
         <!-- place navbar here -->
-        <div class="container-fluid">
-            .<div class="row justify-content-right align-items-right g-2 shadow">
-                <div class="col">Column</div>
+        <div class="container-fluid bg-dark-subtle">
+            <div class="row g-2 border bg-dark-subtle">
+                <div class="col">
+                    {% if user.is_authenticated %}
+                        <form action="/post/logout" method="POST">
+                            <input type="hidden" value="{{return_aim}}">
+                            <button class="float-end btn btn-outline-secondary">Abmelden</button>
+                            <p class="float-end">{{user.username}}</p>
+                        </form>
+                    {% else %}     
+                        <form action="/post/login" method="POST">
+                            <input type="hidden" value="{{return_aim}}">
+                            <button class="float-end">Anmelden</button>
+                            <input class="float-end" type="password" placeholder="Passwort">
+                            <input class="float-end" type="text" placeholder="Benutzername">
+                        </form>
+                    {% endif %}
+                </div>
             </div>
             
         </div>

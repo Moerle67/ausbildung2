@@ -8,6 +8,7 @@ from .models import Gruppe,Team, Block, Ausbilder
 # Create your views here.
 def plan_grob(request, team, year, kw):
     team = get_object_or_404(Team, id=team)
+    return_aim = f"/plan/{team.id}/{year}/{kw}"
     lst_ds_group = team.groups.filter(activ=True)
     d = f"{year}-W{kw}"
     r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
@@ -34,6 +35,8 @@ def plan_grob(request, team, year, kw):
         lst_group.append((lst_daytime, gruppe))
 
     content= {
+
+        "return_aim": return_aim,
         "liste": lst_group,
         "team": team,
         "year": str(year),
