@@ -51,45 +51,47 @@
     <hr />
 {% endfor %}
 {% comment %} Liste freier Mitarbeiter {% endcomment %}
-<div class="row mb-3">
-    {% for daytime in daytimes %}
+{% if 'plan.add_block' in perms %}
+    <div class="row mb-3">
+        {% for daytime in daytimes %}
+            <div class="row justify-content-center align-items-center g-2 ">
+                <div class="col-1 border border-2 border-black text-center me-3 shadow"
+                style="background-color: lightgreen">freie Ausbilder {{daytime}}</div>                    
+                {% for day in days %}
+                    <div class="col-2 border border-2 border-black
+                        text-center me-3 shadow"
+                        style="background-color: #4CD8EB">
+                        {% if daytime != "pm" or day != "4" %}
+                            {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
+                                {% for ma in temp|get_ready_aubi %}
+                                        <button id="{{ma.id}}" style="background-color: {{ma.color}};" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
+                                {% endfor %}
+                            {% endwith %}
+                        {% endif %}
+                    </div>
+                {% endfor%}
+            </div>
+        {% endfor %}               
+    </div>
+    {% comment %} Liste geblockter Mitarbeiter {% endcomment %}
+    <div class="row mb-3">
         <div class="row justify-content-center align-items-center g-2 ">
             <div class="col-1 border border-2 border-black text-center me-3 shadow"
-            style="background-color: lightgreen">freie Ausbilder {{daytime}}</div>                    
+                style="background-color: pink">Abwesend{{daytime}}
+            </div>                    
             {% for day in days %}
-                <div class="col-2 border border-2 border-black
-                    text-center me-3 shadow"
+                <div class="col-2 border border-2 border-black text-center me-3 shadow"
                     style="background-color: #4CD8EB">
-                    {% if daytime != "pm" or day != "4" %}
-                        {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:daytime|add:","|add:team.name %}
-                            {% for ma in temp|get_ready_aubi %}
-                                    <button id="{{ma.id}}" style="background-color: {{ma.color}};" draggable="true" ondragstart="drag(event)">{{ma.user}}</button>
-                            {% endfor %}
-                        {% endwith %}
-                    {% endif %}
+                    {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:team.name %}
+                        {% for ma in temp|get_block_aubi %}
+                            <button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button>
+                        {% endfor %}
+                    {% endwith %}
                 </div>
             {% endfor%}
         </div>
-    {% endfor %}               
-</div>
-{% comment %} Liste geblockter Mitarbeiter {% endcomment %}
-<div class="row mb-3">
-    <div class="row justify-content-center align-items-center g-2 ">
-        <div class="col-1 border border-2 border-black text-center me-3 shadow"
-            style="background-color: pink">Abwesend{{daytime}}
-        </div>                    
-        {% for day in days %}
-            <div class="col-2 border border-2 border-black text-center me-3 shadow"
-                style="background-color: #4CD8EB">
-                {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:team.name %}
-                    {% for ma in temp|get_block_aubi %}
-                        <button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button>
-                    {% endfor %}
-                {% endwith %}
-            </div>
-        {% endfor%}
     </div>
-</div>
+{% endif %}
 {% endblock content %}
  
 {% block js %}
