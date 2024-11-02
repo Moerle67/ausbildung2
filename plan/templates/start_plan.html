@@ -24,17 +24,19 @@
             <div class="row g-2 border bg-dark-subtle">
                 <div class="col">
                     {% if user.is_authenticated %}
-                        <form action="/post/logout" method="POST">
-                            <input type="hidden" value="{{return_aim}}">
+                        <form action="/plan/logout" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{cont}}" name="cont">
                             <button class="float-end btn btn-outline-secondary">Abmelden</button>
                             <p class="float-end">{{user.username}}</p>
                         </form>
                     {% else %}     
-                        <form action="/post/login" method="POST">
-                            <input type="hidden" value="{{return_aim}}">
+                        <form action="/plan/login" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" value="{{cont}}" name="cont">
                             <button class="float-end">Anmelden</button>
-                            <input class="float-end" type="password" placeholder="Passwort">
-                            <input class="float-end" type="text" placeholder="Benutzername">
+                            <input class="float-end" type="password" placeholder="Passwort" name="password" tabindex="1">
+                            <input class="float-end" type="text" placeholder="Benutzername" name="name" tabindex="2">
                         </form>
                     {% endif %}
                 </div>

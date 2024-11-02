@@ -1,11 +1,28 @@
 ## todo 
 # Liste Plan
 
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 import datetime
 
 from .models import Gruppe,Team, Block, Ausbilder
 # Create your views here.
+
+def user_login(request):
+    name = request.POST['name']
+    password = request.POST['password']
+    cont = request.POST['cont']
+    user = authenticate(request, username=name, password=password)
+    if user is not None:
+        login(request, user)
+    return redirect(cont)
+    # Redirect to a success page.
+
+def user_logout(request):
+    cont = request.POST['cont']
+    logout(request)
+    return redirect(cont)
+
 def plan_grob(request, team, year, kw):
     team = get_object_or_404(Team, id=team)
     return_aim = f"/plan/{team.id}/{year}/{kw}"
@@ -36,7 +53,7 @@ def plan_grob(request, team, year, kw):
 
     content= {
 
-        "return_aim": return_aim,
+        "cont": return_aim,
         "liste": lst_group,
         "team": team,
         "year": str(year),
