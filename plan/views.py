@@ -25,6 +25,7 @@ def user_logout(request):
 
 def plan_grob(request, team, year, kw):
     team = get_object_or_404(Team, id=team)
+    teams = Team.objects.filter(activ = True)
     return_aim = f"/plan/{team.id}/{year}/{kw}"
     lst_ds_group = team.groups.filter(activ=True)
     d = f"{year}-W{kw}"
@@ -53,6 +54,7 @@ def plan_grob(request, team, year, kw):
 
     content= {
 
+        "teams": teams,
         "cont": return_aim,
         "liste": lst_group,
         "team": team,

@@ -22,3 +22,8 @@ function onChangeContent(id, text, team, year, kw) {
     const url = `/plan/set_content/${id}/${text}/${team}/${year}/${kw}`;
     window.location = url;
 }
+
+function onChangeSelectYear(team, year, kw) {
+    const url = `/plan/${team}/${year}/${kw}`;
+    window.location = url; 
+} 
