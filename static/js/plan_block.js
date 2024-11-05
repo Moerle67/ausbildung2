@@ -23,7 +23,7 @@ function onChangeContent(id, text, team, year, kw) {
     window.location = url;
 }
 
-function onChangeSelectYear(team, year, kw) {
+function onChangeSelect(team, year, kw) {
     const url = `/plan/${team}/${year}/${kw}`;
     window.location = url; 
 } 
