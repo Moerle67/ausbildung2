@@ -53,8 +53,9 @@ def get_ready_aubi(value):
     for aubi in lst_aubi:
         ## Prüfung allgemeine Abwesenheit
         # Wochentag
-        ds = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY])
-        if len(ds)>0:       
+        ds = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY], daytime=daytime)
+        if len(ds)>0:
+            print("Tag")       
             continue    
         # Datum ermitteln
         d = f"{int(lst_param[IDX_YEAR])}-W{int(lst_param[IDX_KW])}"
@@ -62,11 +63,13 @@ def get_ready_aubi(value):
         r += datetime.timedelta(days=int(lst_param[IDX_DAY]))
         # Ganztags
         ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime="gt")
-        if len(ds)>0:       
+        if len(ds)>0:
+            print("Ganztag")        
             continue    
         # Tageszeit
         ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=daytime)
-        if len(ds)>0:       
+        if len(ds)>0:
+            print(daytime)         
             continue 
 
         # Aktuellen Ausbildungsplan prüfen    
