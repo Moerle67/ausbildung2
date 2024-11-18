@@ -73,7 +73,7 @@ class Team(models.Model):
 
 class Block(models.Model):
     DAYTIME_CHOICES = (
-#        ("gr", "Ganztags"),
+    #    ("gt", "Ganztag"),
         ("am", "Vormittag"),
         ("pm", "Nachmittag"),
     )
@@ -106,7 +106,7 @@ class AubiBlock(models.Model):
         (4, 'Freitag')
     )
     DAYTIME_CHOICES = (
-#        ("gr", "Ganztags"),
+        ("gt", "Ganztag"),
         ("am", "Vormittag"),
         ("pm", "Nachmittag"),
     )

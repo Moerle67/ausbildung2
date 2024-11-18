@@ -1,7 +1,7 @@
 from django import template
 from ..models import Block, Gruppe, Team, AubiBlock
 import datetime
-
+from django.db.models import Q
 register = template.Library()
 
 @register.filter
@@ -53,9 +53,8 @@ def get_ready_aubi(value):
     for aubi in lst_aubi:
         ## Prüfung allgemeine Abwesenheit
         # Wochentag
-        ds = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY], daytime=daytime)
-        if len(ds)>0:
-            print("Tag")       
+        ds = AubiBlock.objects.filter(Q(daytime="gt") | Q(daytime=daytime), aubi=aubi, day=lst_param[IDX_DAY])
+        if len(ds)>0:    
             continue    
         # Datum ermitteln
         d = f"{int(lst_param[IDX_YEAR])}-W{int(lst_param[IDX_KW])}"
@@ -63,13 +62,11 @@ def get_ready_aubi(value):
         r += datetime.timedelta(days=int(lst_param[IDX_DAY]))
         # Ganztags
         ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime="gt")
-        if len(ds)>0:
-            print("Ganztag")        
+        if len(ds)>0:  
             continue    
         # Tageszeit
         ds = AubiBlock.objects.filter(aubi=aubi, date=r, daytime=daytime)
-        if len(ds)>0:
-            print(daytime)         
+        if len(ds)>0:       
             continue 
 
         # Aktuellen Ausbildungsplan prüfen    
@@ -96,16 +93,22 @@ def get_block_aubi(value):
     lst_aubi_block = []
 
     for aubi in lst_aubi:
+        # Ganztags
+        ds0 = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY], daytime="gt")
+    
         # Entsprechenden Wochentag
         ds1 = AubiBlock.objects.filter(aubi=aubi, day=lst_param[IDX_DAY])
 
         # Entsprechendes Datum
         ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
-        if len(ds1) > 0:
+        if len(ds0) > 0:
+            ds = list(ds1)[-1]
+            lst_aubi_block.append((aubi,"gt",ds.comment))
+        elif len(ds1) > 0:
             ds = list(ds1)[-1]
             lst_aubi_block.append((aubi,ds.daytime,ds.comment))
         elif len(ds2) > 0:
-            ds = list(ds2)[-1]
-            lst_aubi_block.append((aubi,ds.daytime,ds.comment))
+                ds = list(ds2)[-1]
+                lst_aubi_block.append((aubi,ds.daytime,ds.comment))
 
     return lst_aubi_block
