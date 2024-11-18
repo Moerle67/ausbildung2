@@ -50,7 +50,12 @@
                         ondrop="drop(event, {{gruppe.1.id}}, {{year}}, {{kw}}, {{day.1}}, '{{daytime.1}}', {{team.id}})"
                         style="background-color: {{day.0.teacher.color}}">
                         {% if daytime.1 != "pm" or day != "4" %}
-                            {{day.0.teacher}}<br /><input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                            {{day.0.teacher}}<br />
+                            {% if 'plan.add_block' in perms and editable %}
+                                <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                            {% else %}
+                                {{day.0.content}}
+                            {% endif %} 
                         {% endif %}
                     </div>
                 {% endfor %}

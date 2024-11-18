@@ -56,11 +56,12 @@ def plan_grob(request, team, year, kw):
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, gruppe))
 
-    team_lst = team.members.all()
-    aubi_ds  = Ausbilder.objects.get(user=request.user)
-    editable = aubi_ds in list(team_lst)
-    print(aubi_ds, list(team_lst))
-    print(editable)
+    team_lst = team.members.all()           
+    if request.user.id is not None:                             # User ist angemeldet
+        aubi_ds  = Ausbilder.objects.get(user=request.user)     # User ist Teil des Teams
+        editable = aubi_ds in list(team_lst)
+    else:
+        editable = False
     content= {
         "editable": editable,
         "teams": teams,
