@@ -19,7 +19,8 @@ class Daytime(models.Model):
         return reverse("Daytime_detail", kwargs={"pk": self.pk})
 
 class Ausbilder(models.Model):
-    user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.RESTRICT)
+    # user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.RESTRICT, unique=True)
+    user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE)
     color = models.CharField(("Farbe"), max_length=20)
     beschreibung = models.TextField("Beschreibung", null=True, blank=True)
     activ = models.BooleanField(("Aktiv"), default=True)

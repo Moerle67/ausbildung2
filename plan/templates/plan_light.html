@@ -60,7 +60,7 @@
     <hr />
 {% endfor %}
 {% comment %} Liste freier Mitarbeiter {% endcomment %}
-{% if 'plan.add_block' in perms %}
+{% if 'plan.add_block' in perms and editable %}
     <div class="row mb-3">
         {% for daytime in daytimes %}
             <div class="row justify-content-center align-items-center g-2 ">

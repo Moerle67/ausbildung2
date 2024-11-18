@@ -3,7 +3,7 @@
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
-import datetime
+import datetime, time, locale
 
 from .models import Gruppe,Team, Block, Ausbilder
 # Create your views here.
@@ -22,6 +22,10 @@ def user_logout(request):
     cont = request.POST['cont']
     logout(request)
     return redirect(cont)
+
+def plan_prev(request, team):
+    kw = time.strftime("%W", time.localtime())
+    return redirect(f"/plan/{team}/{2024}/{kw}")
 
 def plan_grob(request, team, year, kw):
     team = get_object_or_404(Team, id=team)
@@ -52,8 +56,13 @@ def plan_grob(request, team, year, kw):
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, gruppe))
 
+    team_lst = team.members.all()
+    aubi_ds  = Ausbilder.objects.get(user=request.user)
+    editable = aubi_ds in list(team_lst)
+    print(aubi_ds, list(team_lst))
+    print(editable)
     content= {
-
+        "editable": editable,
         "teams": teams,
         "cont": return_aim,
         "liste": lst_group,
@@ -72,16 +81,21 @@ def block(request, group, year, kw, day, daytime, aubi_id, team):
     gruppe_ds = Gruppe.objects.get(id=group)
     teacher_ds = Ausbilder.objects.get(id=aubi_id)
 
-    ds, fail = Block.objects.get_or_create(
-        group=gruppe_ds, 
-        year=year, 
-        kw = kw, 
-        day = day, 
-        daytime = daytime)
+    # Ausbilder muss in dem entsprechendem Team sein
+    team_ds = Team.objects.get(id=team)
+    team_lst = team_ds.members.all()
+    aubi_ds = Ausbilder.objects.get(user=request.user)
+    if aubi_ds in list(team_lst):               
+        ds, fail = Block.objects.get_or_create(
+            group=gruppe_ds, 
+            year=year, 
+            kw = kw, 
+            day = day, 
+            daytime = daytime)
 
-    ds.teacher = teacher_ds
-    ds.content = ""
-    ds.save()
+        ds.teacher = teacher_ds
+        ds.content = ""
+        ds.save()
 
     return redirect(f"/plan/{team}/{year}/{kw}")
 
