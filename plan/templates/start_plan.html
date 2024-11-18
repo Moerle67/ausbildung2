@@ -30,7 +30,7 @@
                             <button class="float-end btn btn-outline-secondary">Abmelden</button>
                             <p class="float-end">{{user.username}}</p>
                         </form>
-                    {% else %}     
+                    {% else %} 
                         <form action="/plan/login" method="POST">
                             {% csrf_token %}
                             <input type="hidden" value="{{cont}}" name="cont">

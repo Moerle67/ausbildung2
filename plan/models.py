@@ -125,3 +125,18 @@ class AubiBlock(models.Model):
     def get_absolute_url(self):
         return reverse("AubiBlock_detail", kwargs={"pk": self.pk})
 
+class Log(models.Model):
+    user = models.ForeignKey(User, verbose_name=("Benutzer"), on_delete=models.CASCADE)
+    block = models.ForeignKey(Block, verbose_name=("Ausbildungsblock"), on_delete=models.CASCADE)
+    time = models.DateTimeField(("Zeitpunkt"), auto_now=False, auto_now_add=True)
+    description = models.CharField(("Tätigkeit"), max_length=50)
+
+    class Meta:
+        verbose_name = "Log"
+        verbose_name_plural = "Logs"
+
+    def __str__(self):
+        return f"{self.block} - {self.user}/{self.time}"
+
+    def get_absolute_url(self):
+        return reverse("Log_detail", kwargs={"pk": self.pk})

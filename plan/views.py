@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 import datetime, time, locale
 
-from .models import Gruppe,Team, Block, Ausbilder
+from .models import Gruppe,Team, Block, Ausbilder, Log
 # Create your views here.
 
 def user_login(request):
@@ -98,12 +98,26 @@ def block(request, group, year, kw, day, daytime, aubi_id, team):
         ds.content = ""
         ds.save()
 
+        # Log
+        ds_log = Log()
+        ds_log.user = request.user
+        ds_log.block = ds
+        ds_log.description = "block changed"
+        ds_log.save()
+
     return redirect(f"/plan/{team}/{year}/{kw}")
 
 def set_content(request, id, content, team, year, kw):
     ds = Block.objects.get(id=id)
     ds.content = content
     ds.save()
+    
+    # Log
+    ds_log = Log()
+    ds_log.user = request.user
+    ds_log.block = ds
+    ds_log.description = "content changed"
+    ds_log.save()
 
     return redirect(f"/plan/{team}/{year}/{kw}")
 

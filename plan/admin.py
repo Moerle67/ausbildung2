@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Gruppe, Block, Ausbilder, Daytime, Team, AubiBlock 
+from .models import Gruppe, Block, Ausbilder, Daytime, Team, AubiBlock, Log
 # Register your models here.
 
 admin.site.register(Gruppe)
@@ -15,3 +15,8 @@ class FrageBlock(admin.ModelAdmin):
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
     filter_horizontal = ['members', 'groups']
+
+@admin.register(Log)
+class LogAdmin(admin.ModelAdmin):
+    list_filter = ['description']
+    list_display = ['block', 'user', 'time']
