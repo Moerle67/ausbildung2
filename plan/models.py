@@ -56,8 +56,8 @@ class Gruppe(models.Model):
 class Team(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50, unique=True)
     comment = models.TextField(("Beschreibung"), null=True, blank=True)
-    members = models.ManyToManyField(Ausbilder, verbose_name=("Ausbilder"), null=True, blank=True)
-    groups = models.ManyToManyField(Gruppe, verbose_name=("Gruppen"), null=True, blank=True)
+    members = models.ManyToManyField(Ausbilder, verbose_name=("Ausbilder"), blank=True)
+    groups = models.ManyToManyField(Gruppe, verbose_name=("Gruppen"), blank=True)
     activ = models.BooleanField(("Aktiv"), default=True)
 
     class Meta:

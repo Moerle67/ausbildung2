@@ -103,12 +103,12 @@ def get_block_aubi(value):
         ds2 = AubiBlock.objects.filter(aubi=aubi, date=r)
         if len(ds0) > 0:
             ds = list(ds1)[-1]
-            lst_aubi_block.append((aubi,"gt",ds.comment))
+            lst_aubi_block.append((aubi,"gt",ds.comment, ds.id))
         elif len(ds1) > 0:
             ds = list(ds1)[-1]
-            lst_aubi_block.append((aubi,ds.daytime,ds.comment))
+            lst_aubi_block.append((aubi,ds.daytime,ds.comment, ds.id))
         elif len(ds2) > 0:
                 ds = list(ds2)[-1]
-                lst_aubi_block.append((aubi,ds.daytime,ds.comment))
+                lst_aubi_block.append((aubi,ds.daytime,ds.comment, ds.id))
 
     return lst_aubi_block
