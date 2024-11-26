@@ -54,7 +54,7 @@
                             {% if 'plan.add_block' in perms and editable %}
                                 <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
                             {% else %}
-                                {{day.0.content}}
+                                <span style="text-align: center">{{day.0.content}}</span>
                             {% endif %} 
                         {% endif %}
                     </div>
