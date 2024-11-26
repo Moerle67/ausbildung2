@@ -24,11 +24,11 @@
             <button type="button" style="background-color: #EB362C">Akt. Woche</button><br />    
             <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{1}}"><i class="bi bi-caret-left-fill"></i></a>
 
-            {{kw}} - {{year}}
+            {{kw}}/{{year}}
             <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{2}}"><i class="bi bi-caret-right-fill"></i></a>
         </div>
         {% for day in days %}
-            <div class="col-2 border border-2 border-black text-center me-3 shadow"
+            <div class="col-2 border border-2 border-black text-center me-3 shadow display-6"
                 style="background-color: #4CD8EB">{{weekdays|get_at_index:day}} {{week|get_at_index:day }}</div>
         {% endfor %}
     </div>
@@ -41,16 +41,16 @@
             <div class="row justify-content-center align-items-center g-2 ">
                 <div class="col-1 border border-1 border-black text-center me-3 shadow" style="background-color: #4CD8EB">
                     {% if daytime.1 == "am" %}
-                    {{gruppe.1.room}} - {{gruppe.1.short}}
+                    <span class="display-6" title="{{gruppe.1.room}}">{{gruppe.1.short}}</span>
                     {% endif %}
                 </div>
-                {% for day in daytime.0 %}                                                          
-                    <div class="col-2 border border-1 border-black text-center me-3 shadow" 
+                {% for day in daytime.0 %}                                                     
+                    <div  title="{{day.0.teacher}}" class="col-2 border border-1 border-black text-center me-3 shadow" 
                         ondragover="allowDrop(event)" 
                         ondrop="drop(event, {{gruppe.1.id}}, {{year}}, {{kw}}, {{day.1}}, '{{daytime.1}}', {{team.id}})"
                         style="background-color: {{day.0.teacher.color}}">
                         {% if daytime.1 != "pm" or day != "4" %}
-                            {{day.0.teacher}}<br />
+                            <span class="display-6">{{day.0.teacher.user.last_name}}</span><br />
                             {% if 'plan.add_block' in perms and editable %}
                                 <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
                             {% else %}
@@ -98,7 +98,7 @@
                     style="background-color: #4CD8EB">
                     {% with temp=year|add:","|add:kw|add:","|add:day|add:","|add:team.name %}
                         {% for ma in temp|get_block_aubi %}
-                            <button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button>
+                            <a href="/admin/plan/aubiblock/{{ma.3}}/change" target="_blank"><button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button></a>
                         {% endfor %}
                     {% endwith %}
                 </div>
