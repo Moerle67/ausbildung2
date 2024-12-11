@@ -12,5 +12,7 @@ urlpatterns = [
     path('set_content/<int:id>/<str:content>/<int:team>/<int:year>/<int:kw>', views.set_content, name='set_content'),
     path('set_kw/<int:team>/<int:year>/<int:kw>/<int:code>', views.set_kw, name='set_kw'),
     path('login', views.user_login, name="login"),
-    path('logout', views.user_logout, name="logout")
+    path('logout', views.user_logout, name="logout"),
+    # Block löschen
+    path('block/del/<int:block>/<int:team>', views.block_del, name="block_del"),
 ]

@@ -3,6 +3,8 @@
 
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import permission_required
+
 import datetime, time, locale
 
 from .models import Gruppe,Team, Block, Ausbilder, Log
@@ -132,4 +134,12 @@ def set_kw(request, team, year, kw, code):
         if kw==54:
             year += 1
             kw = 1        
+    return redirect(f"/plan/{team}/{year}/{kw}")
+
+@permission_required('plan.change_block')
+def block_del(request, block, team):
+    ds_block = get_object_or_404(Block, id = block)
+    year = ds_block.year
+    kw = ds_block.kw
+    ds_block.delete()
     return redirect(f"/plan/{team}/{year}/{kw}")

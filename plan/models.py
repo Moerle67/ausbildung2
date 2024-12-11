@@ -113,7 +113,7 @@ class AubiBlock(models.Model):
     aubi = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
     date = models.DateField(("Datum"), auto_now=False, auto_now_add=False, null=True, blank=True)
     day = models.IntegerField(("Wochentag)"), choices=WD_CHOICES, null=True, blank=True)
-    daytime = models.CharField(("Tageszeit"), max_length=2, choices=DAYTIME_CHOICES)
+    daytime = models.CharField(("Tageszeit"), max_length=2, choices=DAYTIME_CHOICES, default="gt")
     comment = models.TextField(("Kommentar"), null=True, blank=True)
     class Meta:
         verbose_name = ("AubiBlock")

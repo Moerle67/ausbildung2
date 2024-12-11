@@ -22,10 +22,10 @@
     <div class="row justify-content-center align-items-center g-2 mb-3 fs-4">
         <div class="col-1 border border-2 border-black text-center me-3 shadow" style="background-color: #EB362C">
             <button type="button" style="background-color: #EB362C">Akt. Woche</button><br />    
-            <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{1}}"><i class="bi bi-caret-left-fill"></i></a>
+            <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{1}}"><i class="bi bi-caret-left-fill d-print-none"></i></a>
 
             {{kw}}/{{year}}
-            <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{2}}"><i class="bi bi-caret-right-fill"></i></a>
+            <a href="/plan/set_kw/{{team.id}}/{{year}}/{{kw}}/{{2}}"><i class="bi bi-caret-right-fill d-print-none"></i></a>
         </div>
         {% for day in days %}
             <div class="col-2 border border-2 border-black text-center me-3 shadow display-6"
@@ -53,6 +53,9 @@
                             <span class="display-6">{{day.0.teacher.user.last_name}}</span><br />
                             {% if 'plan.add_block' in perms and editable %}
                                 <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                 {% if  day.0.id %} {% comment %} Block muss vorhanden sein {% endcomment %}
+                                    <a hreF="{% url 'block_del' day.0.id team.id %}"><i class="bi bi-trash" title="Eintrag löschen" style="float: right;" ></i></a>
+                                {% endif %}
                             {% else %}
                                 <span style="text-align: center">{{day.0.content}}</span>
                             {% endif %} 
@@ -66,7 +69,7 @@
 {% endfor %}
 {% comment %} Liste freier Mitarbeiter {% endcomment %}
 {% if 'plan.add_block' in perms and editable %}
-    <div class="row mb-3">
+    <div class="row mb-3 d-print-none">
         {% for daytime in daytimes %}
             <div class="row justify-content-center align-items-center g-2 ">
                 <div class="col-1 border border-2 border-black text-center me-3 shadow"
@@ -101,6 +104,8 @@
                             <a href="/admin/plan/aubiblock/{{ma.3}}/change" target="_blank"><button title="{{ma.2}}">{{ma.0.user}}({{ma.1}})</button></a>
                         {% endfor %}
                     {% endwith %}
+                    {% comment "Plus hinzufügen" %}{% endcomment %}
+                    <a href="/admin/plan/aubiblock/add/" target="_blank" title="Hinzufügen"><button class="btn btn-outline-primary"><i class="bi bi-person-plus d-print-none"></button></i></a>
                 </div>
             {% endfor%}
         </div>
