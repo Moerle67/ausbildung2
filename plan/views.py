@@ -27,7 +27,8 @@ def user_logout(request):
 
 def plan_prev(request, team):
     kw = time.strftime("%W", time.localtime())
-    return redirect(f"/plan/{team}/{2024}/{kw}")
+    year = time.strftime("%Y", time.localtime())
+    return redirect(f"/plan/{team}/{year}/{kw}")
 
 def plan_grob(request, team, year, kw):
     team = get_object_or_404(Team, id=team)

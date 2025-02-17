@@ -77,6 +77,7 @@ def gen_pdf(request, id, typ):
         'termin': termin,
         'punkte': punkte,
         'thema': thema,
+        'gruppe': klausur.gruppe,
     }
     if typ == 1 or typ == 3: # Klausur
         response = renderers.render_to_pdf("pdfs/klausur_gen.html", context)

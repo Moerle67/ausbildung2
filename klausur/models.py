@@ -22,8 +22,8 @@ class Thema(models.Model):
 
 
 class Frage(models.Model):
-    titel = models.CharField(("Titel"), max_length=250)
-    inhalt = models.CharField("Inhalt", max_length=50, default="?")
+    titel = models.CharField(("Thema"), max_length=250)
+    inhalt = models.CharField("Überschrift", max_length=50, default="?")
     frage = models.TextField(("Frage"))
     musterantwort = models.TextField(("Musterantwort"), default ="")
     bild = models.ImageField(("Bild"), blank=True, null=True)
