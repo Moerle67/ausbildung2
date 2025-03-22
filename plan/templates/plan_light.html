@@ -13,7 +13,7 @@
                 <option value="{{element.id}}" {% if team.id == element.id %}selected{% endif %}>{{element}}</option>
                 {% endfor %}
             </select>  
-            <button type="button" class="btn btn-outline-info ms-3" title="Plan zur nächsten Woche kopieren"><i class="bi bi-copy"></i></button>
+            <a href="/plan/copy_plan/{{team.id}}/{{year}}/{{kw}}"><button type="button" class="btn btn-outline-info ms-3" title="Plan aus letzte Woche übernehmen"><i class="bi bi-copy"></i></button></a>
             </h1>
         </div>
 </div>
