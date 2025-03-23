@@ -12,8 +12,11 @@
                 {% for element in teams %}
                 <option value="{{element.id}}" {% if team.id == element.id %}selected{% endif %}>{{element}}</option>
                 {% endfor %}
-            </select>  
-            <a href="/plan/copy_plan/{{team.id}}/{{year}}/{{kw}}"><button type="button" class="btn btn-outline-info ms-3" title="Plan aus letzte Woche übernehmen"><i class="bi bi-copy"></i></button></a>
+            </select>
+            {% if 'plan.add_block' in perms and editable %} {% comment %}Adminrechte {% endcomment %}
+                <a href="/plan/copy_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-info ms-3" title="Plan aus letzte Woche übernehmen"><i class="bi bi-copy"></i></button></a>
+                <a href="/plan/delete_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-danger ms-3" title="Wochenplan zurücksetzen"><i class="bi bi-x-octagon-fill"></i></button></a>
+            {% endif %}    
             </h1>
         </div>
 </div>

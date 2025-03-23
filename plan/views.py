@@ -144,3 +144,12 @@ def block_del(request, block, team):
     kw = ds_block.kw
     ds_block.delete()
     return redirect(f"/plan/{team}/{year}/{kw}")
+
+@permission_required('plan.change_block')
+def delete_plan(request, team, year, kw):
+    team_ds = Team.objects.get(id=team)
+    groups = team_ds.groups.filter(activ=True)
+    for group in groups:
+        x = Block.objects.filter(year=year, kw=kw, group=group.id)
+        x.delete()
+    return redirect(f"/plan/{team}/{year}/{kw}")
