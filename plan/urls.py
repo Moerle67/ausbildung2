@@ -15,4 +15,5 @@ urlpatterns = [
     path('logout', views.user_logout, name="logout"),                                                                               # Logout
     path('block/del/<int:block>/<int:team>', views.block_del, name="block_del"),                                                    # Block löschen
     path('delete_plan/<int:team>/<int:year>/<int:kw>', views.delete_plan, name = "plan_grob"),    
+    path('copy_plan/<int:team>/<int:year>/<int:kw>', views.copy_plan, name = "plan_grob"),    
 ]

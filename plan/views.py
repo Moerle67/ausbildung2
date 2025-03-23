@@ -153,3 +153,32 @@ def delete_plan(request, team, year, kw):
         x = Block.objects.filter(year=year, kw=kw, group=group.id)
         x.delete()
     return redirect(f"/plan/{team}/{year}/{kw}")
+
+@permission_required('plan.change_block')
+def copy_plan(request, team, year, kw):
+    kw_old = kw - 1
+    team_ds = Team.objects.get(id=team)
+    groups = team_ds.groups.filter(activ=True)
+    for group in groups:
+        for day in range(5):
+            for daytime in ("am", "pm"):
+                ds = Block.objects.filter(group=group, year=year, kw=kw, day= day, daytime=daytime )
+                if ds:
+                    print(ds)
+                else:
+                    ds_old = Block.objects.filter(group=group, year=year, kw=kw_old, day= day, daytime=daytime )
+                    if ds_old:
+                        # copy
+                        ds, fail = Block.objects.get_or_create(
+                            group=group, 
+                            year=year, 
+                            kw = kw, 
+                            day = day, 
+                            daytime = daytime)
+                        ds.teacher = ds_old[0].teacher
+                        ds.content = ds_old[0].content
+                        ds.save()
+                    else:
+                        print("Keinen alten Datensatz gefunden")
+        x = Block.objects.filter(year=year, kw=kw, group=group.id)
+    return redirect(f"/plan/{team}/{year}/{kw}")
