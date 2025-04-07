@@ -2,6 +2,7 @@ from datetime import date
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+import math
 
 # Create your models here.
 class Thema(models.Model):
@@ -147,3 +148,37 @@ class Answer(models.Model):
 
     def get_absolute_url(self):
         return reverse("Solution_detail", kwargs={"pk": self.pk})
+
+class Bewertung(models.Model):
+    note = models.IntegerField(("Note"))
+    bewertung =models.CharField(("Bewertung"), max_length=50)
+
+    class Meta:
+        verbose_name = ("Bewertung")
+        verbose_name_plural = ("Bewertungen")
+
+    def __str__(self):
+        return f"{self.note} - {self.bewertung}"
+
+    def get_absolute_url(self):
+        return reverse("Bewertung_detail", kwargs={"pk": self.pk})
+
+class IHK_key(models.Model):
+    punkte = models.IntegerField(("Punkte/Prozent"))
+    note = models.FloatField(("Note"))
+
+    @property
+    def get_bewertung(self):  
+        return Bewertung.objects.get(note=(self.note)).bewertung
+
+
+    class Meta:
+        verbose_name = "IHK Notenschlüssel"
+        verbose_name_plural = "IHK Notenschlüssel"
+        ordering = ['-punkte']
+
+    def __str__(self):
+        return f"{self.punkte} / {self.note}"
+
+    def get_absolute_url(self):
+        return reverse("IHK_key_detail", kwargs={"pk": self.pk})

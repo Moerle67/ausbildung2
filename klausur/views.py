@@ -1,7 +1,7 @@
-import datetime
+import datetime, math
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, render
-from .models import Klausur, Klausurthema, Frage, Teilnehmer, Answer
+from .models import Klausur, Klausurthema, Frage, Teilnehmer, Answer, IHK_key
 from django.db.models import Sum, Avg
 import locale, random
 from django.contrib.auth.decorators import permission_required
@@ -190,7 +190,7 @@ def evaluation(request, klausur):
     return render(request, "evaluation.html", content)
 
 @permission_required('klausur.view_teilnehmer')
-def evaluation2(request, klausur, tn):
+def evaluation2(request, klausur, tn): #Auswertung Teilnehmer
     # Daten aus DB lesen
     ds_klausur = Klausur.objects.get(id=klausur)
     ds_tn = Teilnehmer.objects.get(id=tn)
@@ -228,13 +228,16 @@ def evaluation2(request, klausur, tn):
                 answer.punkte = frage[1]
                 answer.save()
             return redirect('evaluation', klausur=str(ds_klausur.id))
-
+    note=IHK_key.objects.get(punkte=math.ceil(prozent))
+    bewertung = note.get_bewertung
     content = {
         "klausur": ds_klausur,
         "teilnehmer": ds_tn,
         "fragen": list_fragen,
         "sum": sum,
         "max": ds_klausur.get_gesamtpunkte,
-        "prozent": prozent
+        "prozent": prozent,
+        "note": note.note,
+        "bewertung": bewertung
     }
     return render(request, "evaluation2.html", content)

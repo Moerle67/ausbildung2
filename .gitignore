@@ -10,4 +10,5 @@ db.sqlite_240403
 db.sqlite3
 db.sqlite3.bac
 *.json
-
+*sqlite*
+db .sqlite3.bak4

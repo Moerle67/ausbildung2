@@ -11,6 +11,8 @@ admin.site.register(Thema)
 admin.site.register(Teilnehmer)
 admin.site.register(Gruppe)
 admin.site.register(Answer)
+admin.site.register(IHK_key)
+admin.site.register(Bewertung)
 
 @admin.action(description="PDF generieren")
 def pdf_generate(modeladmin, request, queryset):
