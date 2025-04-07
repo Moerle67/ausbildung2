@@ -168,8 +168,9 @@ class IHK_key(models.Model):
     note = models.FloatField(("Note"))
 
     @property
-    def get_bewertung(self):  
-        return Bewertung.objects.get(note=(self.note)).bewertung
+    def get_bewertung(self):
+        note = round(self.note,0)
+        return Bewertung.objects.get(note=note).bewertung
 
 
     class Meta:
