@@ -229,7 +229,6 @@ def evaluation2(request, klausur, tn): #Auswertung Teilnehmer
                 answer.save()
             return redirect('evaluation', klausur=str(ds_klausur.id))
     note=IHK_key.objects.get(punkte=math.ceil(prozent if prozent < 100 else 100)) 
-    
     bewertung = note.get_bewertung
     content = {
         "klausur": ds_klausur,
