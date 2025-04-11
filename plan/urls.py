@@ -11,6 +11,7 @@ urlpatterns = [
     path('block/<int:group>/<int:year>/<int:kw>/<int:day>/<str:daytime>/<int:aubi_id>/<int:team>', views.block, name='block'),      # Block speichern
     path('set_content/<int:id>/<str:content>/<int:team>/<int:year>/<int:kw>', views.set_content, name='set_content'),               # Ausb-Inhalt speichern
     path('set_content/<int:id>//<int:team>/<int:year>/<int:kw>', views.clear_content, name='clear_content'),               # Ausb-Inhalt speichern
+    path('set_content/<int:id>/<int:team>/<int:year>/<int:kw>', views.clear_content, name='clear_content'),               # Ausb-Inhalt speichern
     path('set_kw/<int:team>/<int:year>/<int:kw>/<int:code>', views.set_kw, name='set_kw'),                                          # KW bestimmen
     path('login', views.user_login, name="login"),                                                                                  # Login
     path('logout', views.user_logout, name="logout"),                                                                               # Logout
