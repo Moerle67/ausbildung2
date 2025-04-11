@@ -124,6 +124,20 @@ def set_content(request, id, content, team, year, kw):
 
     return redirect(f"/plan/{team}/{year}/{kw}")
 
+def clear_content(request, id, team, year, kw):
+    ds = Block.objects.get(id=id)
+    ds.content = ""
+    ds.save()
+    
+    # Log
+    ds_log = Log()
+    ds_log.user = request.user
+    ds_log.block = ds
+    ds_log.description = "content delete"
+    ds_log.save()
+
+    return redirect(f"/plan/{team}/{year}/{kw}")
+
 def set_kw(request, team, year, kw, code):
     if code == 1:
         kw -= 1

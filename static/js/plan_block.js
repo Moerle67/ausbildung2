@@ -19,6 +19,7 @@ function drop(ev, group, year, kw, day, daytime, team) {
 }
 
 function onChangeContent(id, text, team, year, kw) {
+
     const url = `/plan/set_content/${id}/${text}/${team}/${year}/${kw}`;
     window.location = url;
 }
