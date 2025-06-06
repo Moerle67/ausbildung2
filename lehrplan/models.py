@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -68,4 +69,34 @@ class Lernfeld(models.Model):
     def get_absolute_url(self):
         return reverse("Lernfeld_detail", kwargs={"pk": self.pk})
 
+
+class Aubi(models.Model):
+    name = models.CharField(("Name"), max_length=150)
+    kuerzel = models.CharField(("Kürzel"), max_length=5)
+
+    class Meta:
+        verbose_name = ("Ausbilder")
+        verbose_name_plural = ("Ausbilder")
+
+    def __str__(self):
+        return f"{self.kuerzel} - {self.name}"
+
+    def get_absolute_url(self):
+        return reverse("Aubi_detail", kwargs={"pk": self.pk})
+    
+class Block(models.Model):
+    aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
+    lernfeld = models.ForeignKey(Lernfeld, verbose_name=("Lernfeld"), on_delete=models.CASCADE)
+    laenge = models.IntegerField(("cia Ausbildungseinheiten"))
+    beschreibunge = models.TextField(("Beschreibung"))
+
+    class Meta:
+        verbose_name = ("Block")
+        verbose_name_plural = ("Blöcke")
+
+    def __str__(self):
+        return f"{self.aubi} - {self.lernfeld} ({self.laenge} Stunden)"
+
+    def get_absolute_url(self):
+        return reverse("_detail", kwargs={"pk": self.pk})
 
