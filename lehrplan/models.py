@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
+
 # Create your models here.
 
 class Rahmenlehrplan(models.Model):
@@ -49,6 +50,14 @@ class Lernfeld(models.Model):
     @property
     def get_stunden(self):
         return self.stunden1 + self.stunden2 + self.stunden3
+    
+    @property
+    def get_block_stunden(self):
+        lst_block = Block.objects.filter(lernfeld=self)
+        stunden = 0
+        for block in lst_block:
+            stunden += block.laenge
+        return stunden
 
     @property
     def get_berufe(self):
@@ -64,7 +73,7 @@ class Lernfeld(models.Model):
         ordering = ["rahmenlehrplan", "nummer"]
         
     def __str__(self):
-        return f"{self.nummer} {self.inhalt} {self.get_berufe} ({self.get_stunden} Stunden)"
+        return f"{self.nummer} {self.inhalt} {self.get_berufe} ({self.get_block_stunden}/{self.get_stunden} Stunden)"
 
     def get_absolute_url(self):
         return reverse("Lernfeld_detail", kwargs={"pk": self.pk})
