@@ -11,7 +11,6 @@ def start(request, nrlp):
     for lernfeld in lst_lernfelder:
         blocks = Block.objects.filter(lernfeld=lernfeld)
         lst_block.append((lernfeld, blocks))
-    print(lst_block)
     content = {
         'lst_lehrplan': lst_lehrplan,
         'lst_lernfelder': lst_block,
