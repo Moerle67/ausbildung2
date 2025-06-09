@@ -10,7 +10,7 @@ class Rahmenlehrplan(models.Model):
     description = models.TextField(("Beschreibung"), blank=True, null=True)
     bundesland = models.CharField(("Beschreibung"), max_length=50, default="Baden-Württemberg")
     quelle = models.URLField("Quelle", max_length=200)
-
+    aktiv = models.BooleanField(("aktiv"), default=True)
     class Meta:
         verbose_name = ("Rahmenlehrplan")
         verbose_name_plural = ("Rahmenlehrpläne")
@@ -97,7 +97,7 @@ class Block(models.Model):
     aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
     lernfeld = models.ForeignKey(Lernfeld, verbose_name=("Lernfeld"), on_delete=models.CASCADE)
     laenge = models.IntegerField(("cia Ausbildungseinheiten"))
-    beschreibunge = models.TextField(("Beschreibung"))
+    beschreibung = models.TextField(("Beschreibung"))
 
     class Meta:
         verbose_name = ("Block")

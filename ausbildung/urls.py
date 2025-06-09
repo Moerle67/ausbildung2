@@ -25,6 +25,7 @@ urlpatterns = [
     path('time/', include('times.urls')),
     path('ldoku/', include('ldoku.urls')),
     path('plan/', include('plan.urls')),
+    path('lehrplan/', include('lehrplan.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
