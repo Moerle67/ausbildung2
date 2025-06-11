@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -82,6 +82,8 @@ class Lernfeld(models.Model):
 class Aubi(models.Model):
     name = models.CharField(("Name"), max_length=150)
     kuerzel = models.CharField(("Kürzel"), max_length=5)
+    user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE, blank=True, null=True)
+    aktiv = models.BooleanField(("aktiv"), default=True)
 
     class Meta:
         verbose_name = ("Ausbilder")

@@ -14,5 +14,6 @@ def start(request, nrlp):
     content = {
         'lst_lehrplan': lst_lehrplan,
         'lst_lernfelder': lst_block,
+        'cont': '/lehrplan/1',
     }
     return render(request, "lehrplan.html", content)
