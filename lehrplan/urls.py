@@ -5,5 +5,6 @@ from django.conf import settings
 from . import views
 
 urlpatterns = [
-    path('<int:nrlp>', views.start, name = 'index')
+    path('<int:nrlp>', views.start, name = 'index'),
+    path('add_block/<int:nrLernfeld>', views.addBlock, name = 'addBlock'),
 ]
