@@ -23,7 +23,7 @@ def start(request, nrlp):
     return render(request, "lehrplan.html", content)
 
 
-@permission_required('lehrplan.add_Block')
+@permission_required('lehrplan.add_block')
 def addBlock(request, nrLernfeld):
     lernfeld = Lernfeld.objects.get(id=nrLernfeld)
     lehrplan = lernfeld.rahmenlehrplan
@@ -49,9 +49,11 @@ def addBlock(request, nrLernfeld):
     }
     return render(request, "block_new.html", content)
 
-@permission_required('lehrplan.delete_Block')
+@permission_required('lehrplan.delete_block')
 def delBlock(request, nrBlock):
     block = Block.objects.get(id=nrBlock)
     lehrplan =block.lernfeld.rahmenlehrplan
-    block.delete()
+    if request.user == block.aubi.user:
+
+        block.delete()
     return redirect(f"/lehrplan/{lehrplan.id}")
