@@ -1,0 +1,28 @@
+
+{% extends "base_form.html" %}
+
+{% block title %}Eintragen Block{% endblock title %}
+{% block h1 %}Neuen Ausbildungsblock erstellen{% endblock h1 %}
+
+{% block header %}
+<div class="col">
+    <h2>{{lehrplan}}</h2>
+    <h2>{{lernfeld.nummer}}. - {{lernfeld.inhalt}}</h2>
+    <h3>Berufe</h3>
+    <h4>{{lernfeld.get_berufe}}</h4>
+    <h3>Lernziel</h3>
+    <p>{{lernfeld.beschreibung}}</p>
+    <h3>Ausbilder</h3>
+    <h4>{{aubi}}</h4>
+    <ul>
+        {% if lst_blocks|length > 0 %}
+            <h3>Vorhandene Blöcke</h3>
+            {% for block in lst_blocks %}
+            <li>{{block.laenge}} UE / {{block.beschreibung|slice:":80"}}</li>    
+            {% endfor %}
+        {% endif %}
+    </ul>    
+</div>
+{% endblock header %}
+
+

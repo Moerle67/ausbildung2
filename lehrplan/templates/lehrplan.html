@@ -37,7 +37,8 @@
                         <div class="col">
                             {% for block in lernfeld.1 %}
                             <div class="col border shadow rounded-5 p-3 mb-2">
-                                {% if 'block.show_block' in perms%} 
+                                {% if 'block.show_block' in perms%}
+                                    <a href="{% url 'delBlock' nrBlock=block.id %}" title="Ausbildungsblock löschen"><i class="bi bi-x-lg"></i></a>                                  
                                     {{block.aubi}}
                                 {% else %}
                                     {{block.aubi.kuerzel}}     
@@ -47,7 +48,6 @@
                                 {{block.beschreibung}}
                             </div>
                             {% endfor %}
-
                         </div>
                     </div>
                 </div>

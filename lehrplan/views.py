@@ -1,10 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .classForm import *
+from .classForm import FormInput, FormTextArea, FormBtnSave, formLinie
 
-from .models import Rahmenlehrplan, Lernfeld, Block
+from .models import Rahmenlehrplan, Lernfeld, Block, Aubi
 from django.contrib.auth.models import User
-
 from django.contrib.auth.decorators import permission_required
 # Create your views here.
 
@@ -24,8 +23,35 @@ def start(request, nrlp):
     return render(request, "lehrplan.html", content)
 
 
-@permission_required('lehrplan_addBlock')
+@permission_required('lehrplan.add_Block')
 def addBlock(request, nrLernfeld):
     lernfeld = Lernfeld.objects.get(id=nrLernfeld)
-    user = request.user
-    return HttpResponse(f"{lernfeld} + {user}")
+    lehrplan = lernfeld.rahmenlehrplan
+    aubi = Aubi.objects.get(user=request.user)
+    if request.method == 'POST':
+        ds = Block()
+        ds.aubi = aubi
+        ds.lernfeld = lernfeld
+        ds.laenge = request.POST["Anzahl UE"]
+        ds.beschreibung = request.POST["Inhalt"]
+        ds.save()
+        return redirect(f"/lehrplan/{lehrplan.id}")
+    lst_blocks = Block.objects.filter(aubi=aubi, lernfeld=lernfeld)
+    anzahl_ue = FormInput(type="number", label="Anzahl UE")
+    inhalt = FormTextArea("Inhalt", rows=6)
+    forms = (anzahl_ue, inhalt, formLinie, FormBtnSave )
+    content = {
+        'lernfeld': lernfeld,
+        'lehrplan': lehrplan,
+        'lst_blocks': lst_blocks,
+        'aubi': aubi,
+        'forms': forms,
+    }
+    return render(request, "block_new.html", content)
+
+@permission_required('lehrplan.delete_Block')
+def delBlock(request, nrBlock):
+    block = Block.objects.get(id=nrBlock)
+    lehrplan =block.lernfeld.rahmenlehrplan
+    block.delete()
+    return redirect(f"/lehrplan/{lehrplan.id}")

@@ -1,0 +1,24 @@
+{% extends "start_lplan.html" %}
+
+{% load utils static %}
+
+
+{% block title %}{{h1}}{% endblock title %}
+{% block h1 %}{{h1}}{% endblock h1 %}
+
+{% block content %}
+    {% block header %}
+        <p>Zwischenüberschriften und so</p>
+    {% endblock header %}
+    <form method="POST">
+    {% csrf_token %}
+        {% for form in forms %}
+        {{ form | safe }}
+        {% endfor %}
+    </form>
+    <br />
+    {{message}}
+    {% block zusatz %}
+    {% endblock zusatz %}
+{% endblock content %}
+
