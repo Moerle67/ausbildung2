@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import permission_required
 from lehrplan.models import Block as Lehrblock
 from stammdaten.models import Ausbilder as Aubi
 
-from .models import Gruppe,Team, Block, Ausbilder, Log
+from .models import Gruppe,Team, Block, Log
 
 import datetime, time, locale
 # Create your views here.
@@ -67,7 +67,7 @@ def plan_grob(request, team, year, kw):
 
     team_lst = team.members.all()           
     if request.user.id is not None:                             # User ist angemeldet
-        aubi_ds  = Ausbilder.objects.get(user=request.user)     # User ist Teil des Teams
+        aubi_ds  = Aubi.objects.get(user=request.user)     # User ist Teil des Teams
         editable = aubi_ds in list(team_lst)
     else:
         editable = False
@@ -89,12 +89,12 @@ def plan_grob(request, team, year, kw):
 
 def block(request, group, year, kw, day, daytime, aubi_id, team):
     gruppe_ds = Gruppe.objects.get(id=group)
-    teacher_ds = Ausbilder.objects.get(id=aubi_id)
+    teacher_ds = Aubi.objects.get(id=aubi_id)
 
     # Ausbilder muss in dem entsprechendem Team sein
     team_ds = Team.objects.get(id=team)
     team_lst = team_ds.members.all()
-    aubi_ds = Ausbilder.objects.get(user=request.user)
+    aubi_ds = Aubi.objects.get(user=request.user)
     if aubi_ds in list(team_lst):               
         ds, fail = Block.objects.get_or_create(
             group=gruppe_ds, 

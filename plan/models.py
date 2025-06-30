@@ -22,24 +22,6 @@ class Daytime(models.Model):
     def get_absolute_url(self):
         return reverse("Daytime_detail", kwargs={"pk": self.pk})
 
-class Ausbilder(models.Model):
-    # user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.RESTRICT, unique=True)
-    user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE)
-    kuerzel = models.CharField(("Kürzel"), max_length=10)
-    color = models.CharField(("Farbe"), max_length=20)
-    beschreibung = models.TextField("Beschreibung", null=True, blank=True)
-    activ = models.BooleanField(("Aktiv"), default=True)
-
-    class Meta:
-        verbose_name = ("Ausbilder")
-        verbose_name_plural = ("Ausbilder")
-        ordering = ['user']
-
-    def __str__(self):
-        return f"{self.user.first_name} {self.user.last_name} ({self.user})"
-    def get_absolute_url(self):
-        return reverse("Ausbilderdetail", kwargs={"pk": self.pk})
-
 class Gruppe(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50, unique=True)
     short = models.CharField(("Kürzel"), max_length=10)
