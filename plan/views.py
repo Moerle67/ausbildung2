@@ -5,9 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 
-import datetime, time, locale
+from lehrplan.models import Block as Lehrblock
+from stammdaten.models import Ausbilder as Aubi
 
 from .models import Gruppe,Team, Block, Ausbilder, Log
+
+import datetime, time, locale
 # Create your views here.
 
 def user_login(request):
@@ -53,6 +56,9 @@ def plan_grob(request, team, year, kw):
             for day in range(5):
                 ds = Block.objects.filter(group=gruppe, year=year, kw=kw, day=day, daytime=daytime)
                 if len(ds) != 0:   # Datensatz vorhanden
+                    # Lernblöcke für Aubi raussuchen
+                    # aubi = ds[0].teacher
+                    # lst_lernbloecke = Lehrblock.objects.filter(aubi=aubi)
                     lst_day.append((ds[0], day))
                 else:
                     lst_day.append((("--------", "", "white"), day))

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'ldoku.apps.LdokuConfig',
     'plan.apps.PlanConfig',
     'lehrplan.apps.LehrplanConfig',
+    'stammdaten.apps.StammdatenConfig',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+# 
+from stammdaten.models import Ausbilder as Aubi
+
+from lehrplan.models import Block as Lehrblock
 
 # Create your models here.
 
@@ -21,6 +25,7 @@ class Daytime(models.Model):
 class Ausbilder(models.Model):
     # user = models.ForeignKey(User, verbose_name=("User"), on_delete=models.RESTRICT, unique=True)
     user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE)
+    kuerzel = models.CharField(("Kürzel"), max_length=10)
     color = models.CharField(("Farbe"), max_length=20)
     beschreibung = models.TextField("Beschreibung", null=True, blank=True)
     activ = models.BooleanField(("Aktiv"), default=True)
@@ -56,7 +61,7 @@ class Gruppe(models.Model):
 class Team(models.Model):
     name = models.CharField(("Bezeichnung"), max_length=50, unique=True)
     comment = models.TextField(("Beschreibung"), null=True, blank=True)
-    members = models.ManyToManyField(Ausbilder, verbose_name=("Ausbilder"), blank=True)
+    members = models.ManyToManyField(Aubi, verbose_name=("Ausbilder"), blank=True)
     groups = models.ManyToManyField(Gruppe, verbose_name=("Gruppen"), blank=True)
     activ = models.BooleanField(("Aktiv"), default=True)
 
@@ -82,8 +87,9 @@ class Block(models.Model):
     kw = models.IntegerField(("Kalenderwoche"))
     day = models.IntegerField(("Tag"))
     daytime = models.CharField(("Tageszeit"), max_length=2, choices=DAYTIME_CHOICES)
-    teacher = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE, null=True, blank=True)
-    content = models.CharField(("Fach"), max_length=50, null=True, blank=True)
+    teacher = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE, null=True, blank=True)
+    content = models.CharField(("Info"), max_length=50, null=True, blank=True)
+    lehrblock = models.ForeignKey(Lehrblock, verbose_name=("Ausbildungseinheit"), on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         verbose_name = ("Block")
@@ -110,7 +116,7 @@ class AubiBlock(models.Model):
         ("am", "Vormittag"),
         ("pm", "Nachmittag"),
     )
-    aubi = models.ForeignKey(Ausbilder, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
+    aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
     date = models.DateField(("Datum"), auto_now=False, auto_now_add=False, null=True, blank=True)
     day = models.IntegerField(("Wochentag)"), choices=WD_CHOICES, null=True, blank=True)
     daytime = models.CharField(("Tageszeit"), max_length=2, choices=DAYTIME_CHOICES, default="gt")
