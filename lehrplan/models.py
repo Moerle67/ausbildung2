@@ -112,7 +112,7 @@ class Block(models.Model):
         ordering = ["aubi", "lernfeld"]
 
     def __str__(self):
-        return f"{self.aubi} - {self.lernfeld} ({self.laenge} Stunden)"
+        return f"{self.aubi}-{self.lernfeld.nummer}/{self.inhalt} ({self.laenge} Stunden)"
 
     def get_absolute_url(self):
         return reverse("_detail", kwargs={"pk": self.pk})

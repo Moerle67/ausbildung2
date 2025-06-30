@@ -19,7 +19,6 @@ function drop(ev, group, year, kw, day, daytime, team) {
 }
 
 function onChangeContent(id, text, team, year, kw) {
-
     const url = `/plan/set_content/${id}/${text}/${team}/${year}/${kw}`;
     window.location = url;
 }
@@ -27,4 +26,10 @@ function onChangeContent(id, text, team, year, kw) {
 function onChangeSelect(team, year, kw) {
     const url = `/plan/${team}/${year}/${kw}`;
     window.location = url; 
-} 
+}
+
+function onChangeLehrplan(block, plan, team, year, kw) {
+    const url = `/plan/set_lehrplan/${block}/${plan}/${team}/${year}/${kw}`;
+    console.log(url);
+    window.location = url;
+}
