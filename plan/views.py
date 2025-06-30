@@ -10,7 +10,9 @@ from stammdaten.models import Ausbilder as Aubi
 
 from .models import Gruppe,Team, Block, Log
 
-import datetime, time, locale
+import datetime
+import time
+import locale
 # Create your views here.
 
 def user_login(request):
@@ -57,9 +59,9 @@ def plan_grob(request, team, year, kw):
                 ds = Block.objects.filter(group=gruppe, year=year, kw=kw, day=day, daytime=daytime)
                 if len(ds) != 0:   # Datensatz vorhanden
                     # Lernblöcke für Aubi raussuchen
-                    # aubi = ds[0].teacher
-                    # lst_lernbloecke = Lehrblock.objects.filter(aubi=aubi)
-                    lst_day.append((ds[0], day))
+                    aubi = ds[0].teacher
+                    lst_lernbloecke = Lehrblock.objects.filter(aubi=aubi)
+                    lst_day.append((ds[0], day, lst_lernbloecke))
                 else:
                     lst_day.append((("--------", "", "white"), day))
             lst_daytime.append((lst_day, daytime))

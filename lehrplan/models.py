@@ -103,6 +103,7 @@ class Block(models.Model):
     aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE, related_name="AubiRLP")
     lernfeld = models.ForeignKey(Lernfeld, verbose_name=("Lernfeld"), on_delete=models.CASCADE)
     laenge = models.IntegerField(("cia Ausbildungseinheiten"))
+    inhalt = models.CharField(("Inhalt"), max_length=30)
     beschreibung = models.TextField(("Beschreibung"))
 
     class Meta:

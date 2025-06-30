@@ -51,12 +51,17 @@
                     <div  title="{{day.0.teacher}}" class="col-2 border border-1 border-black text-center me-3 shadow" 
                         ondragover="allowDrop(event)" 
                         ondrop="drop(event, {{gruppe.1.id}}, {{year}}, {{kw}}, {{day.1}}, '{{daytime.1}}', {{team.id}})"
-                        style="background-color: {{day.0.teacher.color}}">
+                        style="background-color: {{day.0.teacher.color}}; color: {{day.0.teacher.fg_color}};">
                         {% if daytime.1 != "pm" or day != "4" %}
                             <span class="display-6">{{day.0.teacher.user.last_name}}</span><br />
                             {% if 'plan.add_block' in perms and editable %}
                                  {% if  day.0.id %} {% comment %} Block muss vorhanden sein {% endcomment %}
-                                     <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                     <input type="text" style="background-color: {{day.0.teacher.color}}; color: {{day.0.teacher.fg_color}};" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                     <select>
+                                        {% for block in day.2 %}
+                                            <option>{{block.}}
+                                        {% endfor %}
+                                    <select>
                                     <a hreF="{% url 'block_del' day.0.id team.id %}"><i class="bi bi-trash" title="Eintrag löschen" style="float: right;" ></i></a>
                                 {% endif %}
                             {% else %}
