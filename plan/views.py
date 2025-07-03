@@ -141,6 +141,13 @@ def set_lehrplan(request, block, plan, team, year, kw):
     
     return redirect(f"/plan/{team}/{year}/{kw}")
 
+def clear_lehrplan(request, block, team, year, kw):
+    ds_block = Block.objects.get(id=block)
+    ds_block.lehrblock = None
+    ds_block.save()
+    
+    return redirect(f"/plan/{team}/{year}/{kw}")
+
 def clear_content(request, id, team, year, kw):
     ds = Block.objects.get(id=id)
     ds.content = ""

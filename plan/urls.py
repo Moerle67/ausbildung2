@@ -18,5 +18,7 @@ urlpatterns = [
     path('block/del/<int:block>/<int:team>', views.block_del, name="block_del"),                                                    # Block löschen
     path('delete_plan/<int:team>/<int:year>/<int:kw>', views.delete_plan, name = "plan_grob"),    
     path('copy_plan/<int:team>/<int:year>/<int:kw>', views.copy_plan, name = "plan_grob"),    
+    # Lerninhalte zum Block hinzufügen bzw. löschen
     path('set_lehrplan/<int:block>/<int:plan>/<int:team>/<int:year>/<int:kw>', views.set_lehrplan, name='set_lehrplan'),                         # Ausb-Inhalt speichern
+    path('clear_lehrplan/<int:block>/<int:team>/<int:year>/<int:kw>', views.clear_lehrplan, name='clear_lehrplan'),                         # Ausb-Inhalt speichern
 ]

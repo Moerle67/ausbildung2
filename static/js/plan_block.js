@@ -29,7 +29,11 @@ function onChangeSelect(team, year, kw) {
 }
 
 function onChangeLehrplan(block, plan, team, year, kw) {
-    const url = `/plan/set_lehrplan/${block}/${plan}/${team}/${year}/${kw}`;
-    console.log(url);
+    if (plan == 'x') {
+        const url = `/plan/clear_lehrplan/${block}/${team}/${year}/${kw}`;          // Lerninhalte löschen
+    } else {
+        const url = `/plan/set_lehrplan/${block}/${plan}/${team}/${year}/${kw}`;    // Lerninhalt eintragen
+    }
+    // console.log(url);
     window.location = url;
 }
