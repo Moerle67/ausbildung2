@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import permission_required
 from lehrplan.models import Block as Lehrblock
 from stammdaten.models import Ausbilder as Aubi
 
-from .models import Gruppe,Team, Block, Log
+from .models import Gruppe,Team, Block, Log, JourFixe
 
 import datetime
 import time
@@ -56,14 +56,22 @@ def plan_grob(request, team, year, kw):
         for daytime in daytimes:
             lst_day = []
             for day in range(5):
+                # Jour Fixe?
+                datum = datetime.datetime.strptime(f'{year} {kw} {day+1}','%Y %W %w')
+                ds_jf = JourFixe.objects.filter(gruppe=gruppe, datum__date = datum)
+                jf = None
+                if ds_jf:
+                    if ds_jf[0].get_daytime == daytime:
+                        jf = ds_jf[0].datum
+                    
                 ds = Block.objects.filter(group=gruppe, year=year, kw=kw, day=day, daytime=daytime)
                 if len(ds) != 0:   # Datensatz vorhanden
                     # Lernblöcke für Aubi raussuchen
                     aubi = ds[0].teacher
                     lst_lernbloecke = Lehrblock.objects.filter(aubi=aubi)
-                    lst_day.append((ds[0], day, lst_lernbloecke))
+                    lst_day.append((ds[0], day, lst_lernbloecke, jf))
                 else:
-                    lst_day.append((("--------", "", "white"), day))
+                    lst_day.append((("--------", "", "white"), day, None, jf))
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, gruppe))
 

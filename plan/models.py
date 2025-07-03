@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -128,3 +129,27 @@ class Log(models.Model):
 
     def get_absolute_url(self):
         return reverse("Log_detail", kwargs={"pk": self.pk})
+    
+class JourFixe(models.Model):
+    gruppe = models.ForeignKey(Gruppe, verbose_name="Gruppe", on_delete=models.CASCADE)
+    datum = models.DateTimeField(("Zeitpunkt"), auto_now=False, auto_now_add=False)
+    aktiv = models.BooleanField(("Aktiv"), default=True)
+
+    class Meta:
+        verbose_name = "JourFixe"
+        verbose_name_plural = "JourFixes"
+
+    def __str__(self):
+        return f"{self.gruppe}-{self.datum} ({self.get_daytime})"
+
+    def get_absolute_url(self):
+        return reverse("JourFixe_detail", kwargs={"pk": self.pk})
+
+    @property
+    def get_daytime(self):
+        print(self.datum.time,datetime.time(12, 00))
+        if self.datum.time() < datetime.time(12, 00):
+            return "am"
+        else:
+            return "pm"
+        

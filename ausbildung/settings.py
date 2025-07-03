@@ -120,11 +120,11 @@ LANGUAGE_CODE = 'de'
 
 TIME_ZONE = 'Europe/Berlin'
 
-USE_I18N = True
+USE_I18N = False
 
-USE_TZ = True
+USE_TZ = False
 
-
+USE_L10N = False
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
