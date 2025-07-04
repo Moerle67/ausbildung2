@@ -56,6 +56,13 @@ def delBlock(request, nrBlock):
     block = Block.objects.get(id=nrBlock)
     lehrplan =block.lernfeld.rahmenlehrplan
     if request.user == block.aubi.user:
-
         block.delete()
+    return redirect(f"/lehrplan/{lehrplan.id}")
+
+@permission_required('lehrplan.delete_block')
+def edtBlock(request, nrBlock):
+    block = Block.objects.get(id=nrBlock)
+    lehrplan =block.lernfeld.rahmenlehrplan
+    if request.user == block.aubi.user:
+        print(block)
     return redirect(f"/lehrplan/{lehrplan.id}")
