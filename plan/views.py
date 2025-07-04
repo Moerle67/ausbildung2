@@ -40,10 +40,12 @@ def plan_grob(request, team, year, kw):
     teams = Team.objects.filter(activ = True)
     return_aim = f"/plan/{team.id}/{year}/{kw}"
     lst_ds_group = team.groups.filter(activ=True)
+    # Datum aus Kalenderwoche und Wochentag berechnen
     d = f"{year}-W{kw}"
     r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
     week = []
     for i in range(5):
+        # Datum für Spaltenüberschrift täglich aufaddieren 
         week.append(r.strftime('%d.%m.'))
         r += datetime.timedelta(days=1)
     lst_gruppe = team.groups.filter(activ=True)
