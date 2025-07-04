@@ -33,13 +33,15 @@ def addBlock(request, nrLernfeld):
         ds.aubi = aubi
         ds.lernfeld = lernfeld
         ds.laenge = request.POST["Anzahl UE"]
-        ds.beschreibung = request.POST["Inhalt"]
+        ds.inhalt = request.POST["Inhalt"]
+        ds.beschreibung = request.POST["Beschreibung"]
         ds.save()
         return redirect(f"/lehrplan/{lehrplan.id}")
     lst_blocks = Block.objects.filter(aubi=aubi, lernfeld=lernfeld)
     anzahl_ue = FormInput(type="number", label="Anzahl UE")
-    inhalt = FormTextArea("Inhalt", rows=6)
-    forms = (anzahl_ue, inhalt, formLinie, FormBtnSave )
+    ueber = FormInput("Inhalt")
+    inhalt = FormTextArea("Beschreibung", rows=6)
+    forms = (anzahl_ue, ueber, inhalt, formLinie, FormBtnSave )
     content = {
         'lernfeld': lernfeld,
         'lehrplan': lehrplan,

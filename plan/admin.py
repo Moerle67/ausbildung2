@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from .models import Gruppe, Block, Ausbilder, Daytime, Team, AubiBlock, Log
+from .models import Gruppe, Block, Daytime, Team, AubiBlock, Log, JourFixe
 # Register your models here.
 
 admin.site.register(Gruppe)
-admin.site.register(Ausbilder)
 admin.site.register(Daytime)
 admin.site.register(AubiBlock)
+admin.site.register(JourFixe)
 
 @admin.register(Block)
 class FrageBlock(admin.ModelAdmin):

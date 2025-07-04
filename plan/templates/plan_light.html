@@ -16,9 +16,10 @@
             {% if 'plan.add_block' in perms and editable %} {% comment %}Adminrechte {% endcomment %}
                 <a href="/plan/copy_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-info ms-3" title="Plan aus letzte Woche übernehmen"><i class="bi bi-copy"></i></button></a>
                 <a href="/plan/delete_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-danger ms-3" title="Wochenplan zurücksetzen"><i class="bi bi-x-octagon-fill"></i></button></a>
+                <a href="/lehrplan/1" target="_blank"><button type="button" class="btn btn-outline-info ms-3" title="Lehrplan bearbeiten">Lehrplan</button></a>
             {% endif %}    
             </h1>
-        </div>
+        </div>  
 </div>
 
 <hr />
@@ -48,15 +49,27 @@
                     {% endif %}
                 </div>
                 {% for day in daytime.0 %}                                                     
-                    <div  title="{{day.0.teacher}}" class="col-2 border border-1 border-black text-center me-3 shadow" 
+                    <div  title="{{day.0.teacher}}" class="col-2 border {% if day.3 %}border-4 border-danger{% else %}border-1 border-black{% endif %} text-center me-3 shadow" 
                         ondragover="allowDrop(event)" 
                         ondrop="drop(event, {{gruppe.1.id}}, {{year}}, {{kw}}, {{day.1}}, '{{daytime.1}}', {{team.id}})"
-                        style="background-color: {{day.0.teacher.color}}">
-                        {% if daytime.1 != "pm" or day != "4" %}
-                            <span class="display-6">{{day.0.teacher.user.last_name}}</span><br />
+                        style="background-color: {{day.0.teacher.color}}; color: {{day.0.teacher.fg_color}};">
+                        {% if daytime.1 != "pm" or day != "4" %}    {% comment %} Kein Freitag Nachmittag {% endcomment %}
+                            <span class="display-6" {% if day.3 %}title="{{day.3}}"{% endif %} >{{day.0.teacher.user.last_name}}
+                            {% if day.3 %}
+                                -- Jour Fixe
+                            {% endif %}
+                            </span ><br />
                             {% if 'plan.add_block' in perms and editable %}
                                  {% if  day.0.id %} {% comment %} Block muss vorhanden sein {% endcomment %}
-                                     <input type="text" style="background-color: {{day.0.teacher.color}}" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                     <input type="text" style="background-color: {{day.0.teacher.color}}; color: {{day.0.teacher.fg_color}};" value="{{day.0.content}}" onchange="onChangeContent({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                     <select style="background-color: {{day.0.teacher.color}}; color: {{day.0.teacher.fg_color}};" onchange="onChangeLehrplan({{day.0.id}}, this.value, {{team.id}}, {{year}}, {{kw}})">
+                                            <option value="x">---------</option>
+                                        {% for block in day.2 %}
+                                            <option title="{{block.beschreibung}}" value="{{block.id}}" {% if day.0.lehrblock.id == block.id %}selected{% endif %}>
+                                                {{block.lernfeld.nummer}}-{{block.inhalt|truncatechars:9}}
+                                            </option>
+                                        {% endfor %}
+                                     </select>
                                     <a hreF="{% url 'block_del' day.0.id team.id %}"><i class="bi bi-trash" title="Eintrag löschen" style="float: right;" ></i></a>
                                 {% endif %}
                             {% else %}
