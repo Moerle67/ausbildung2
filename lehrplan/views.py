@@ -71,6 +71,7 @@ def edtBlock(request, nrBlock):
     lst_blocks = Block.objects.filter(aubi=aubi, lernfeld=lernfeld)
     if request.user == block.aubi.user:
         if request.method == 'POST':
+            # Speichern
             ds = block
             ds.aubi = aubi
             ds.lernfeld = lernfeld
@@ -79,7 +80,7 @@ def edtBlock(request, nrBlock):
             ds.beschreibung = request.POST["Beschreibung"]
             ds.save()
             return HttpResponseRedirect(reverse("index", kwargs={"nrlp": lehrplan.id}))
-
+        # Datensatz anzeigen
         anzahl_ue = FormInput(type="number", label="Anzahl UE", value=block.laenge)
         ueber = FormInput("Inhalt", value=block.inhalt)
         inhalt = FormTextArea("Beschreibung", rows=6, value=block.beschreibung)
