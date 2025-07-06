@@ -28,8 +28,9 @@
                             {% csrf_token %}
                             <input type="hidden" value="{{cont}}" name="cont">
                             <button class="float-end btn btn-outline-secondary">Abmelden</button>
-                            <p class="float-end">{{user.username}}</p>
+                            <p class="float-end mx-3">{{user.username}}</p>
                         </form>
+                        <a href="/admin" target="_empty">"<button class="float-end btn btn-outline-danger mx-3">Admin-Bereich</button></a>
                     {% else %} 
                         <form action="/plan/login" method="POST">
                             {% csrf_token %}
