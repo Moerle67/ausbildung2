@@ -18,7 +18,7 @@ class FormInput:
         antwort += '<input '
         if self.submit:
             antwort+= ' onchange="this.form.submit()" '
-        antwort += 'type="'+self.type+'" class="form-control" id="'+self.label+'" value="'+self.value
+        antwort += 'type="'+self.type+'" class="form-control" id="'+self.label+'" value="'+str(self.value)
         antwort += '" name="'+self.label+'"'
         if self.required: 
             antwort += " required"

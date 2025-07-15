@@ -18,7 +18,7 @@
         {% if lst_blocks|length > 0 %}
             <h3>Vorhandene Blöcke</h3>
             {% for block in lst_blocks %}
-            <li>{{block.laenge}} UE / {{block.beschreibung|slice:":80"}}</li>    
+            <li {% if akt_block.id == block.id %}style="color: red" {% endif %}>{{block.laenge}} UE / {{block.beschreibung|slice:":80"}}</li>    
             {% endfor %}
         {% endif %}
     </ul>    

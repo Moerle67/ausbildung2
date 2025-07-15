@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
+
 from .classForm import FormInput, FormTextArea, FormBtnSave, formLinie
 
 from .models import Rahmenlehrplan, Lernfeld, Block, Aubi
@@ -56,6 +58,41 @@ def delBlock(request, nrBlock):
     block = Block.objects.get(id=nrBlock)
     lehrplan =block.lernfeld.rahmenlehrplan
     if request.user == block.aubi.user:
-
         block.delete()
+    return HttpResponseRedirect(reverse("index", kwargs={"nrlp": lehrplan.id}))
+    # return redirect(f"/lehrplan/{lehrplan.id}")
+
+@permission_required('lehrplan.delete_block')
+def edtBlock(request, nrBlock):
+    block = Block.objects.get(id=nrBlock)
+    lernfeld = Lernfeld.objects.get(id=block.lernfeld.id)
+    lehrplan = lernfeld.rahmenlehrplan
+    aubi = Aubi.objects.get(user=request.user)
+    lst_blocks = Block.objects.filter(aubi=aubi, lernfeld=lernfeld)
+    if request.user == block.aubi.user:
+        if request.method == 'POST':
+            # Speichern
+            ds = block
+            ds.aubi = aubi
+            ds.lernfeld = lernfeld
+            ds.laenge = request.POST["Anzahl UE"]
+            ds.inhalt = request.POST["Inhalt"]
+            ds.beschreibung = request.POST["Beschreibung"]
+            ds.save()
+            return HttpResponseRedirect(reverse("index", kwargs={"nrlp": lehrplan.id}))
+        # Datensatz anzeigen
+        anzahl_ue = FormInput(type="number", label="Anzahl UE", value=block.laenge)
+        ueber = FormInput("Inhalt", value=block.inhalt)
+        inhalt = FormTextArea("Beschreibung", rows=6, value=block.beschreibung)
+        forms = (anzahl_ue, ueber, inhalt, formLinie, FormBtnSave )
+        content = {
+            'lernfeld': lernfeld,
+            'lehrplan': lehrplan,
+            'lst_blocks': lst_blocks,
+            'aubi': aubi,
+            'forms': forms,
+            'akt_block': block,
+        }
+        return render(request, "block_new.html", content)
+
     return redirect(f"/lehrplan/{lehrplan.id}")
