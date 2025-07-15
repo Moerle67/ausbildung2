@@ -6,5 +6,5 @@ from .models import Rahmenlehrplan, Beruf, Lernfeld, Aubi, Block
 admin.site.register(Rahmenlehrplan)
 admin.site.register(Beruf)
 admin.site.register(Lernfeld)
-admin.site.register(Aubi)
+# admin.site.register(Aubi)
 admin.site.register(Block)

@@ -5,9 +5,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 
-import datetime, time, locale
+from lehrplan.models import Block as Lehrblock
+from stammdaten.models import Ausbilder as Aubi
 
-from .models import Gruppe,Team, Block, Ausbilder, Log
+from .models import Gruppe,Team, Block, Log, JourFixe
+
+import datetime
+import time
+import locale
 # Create your views here.
 
 def user_login(request):
@@ -35,10 +40,12 @@ def plan_grob(request, team, year, kw):
     teams = Team.objects.filter(activ = True)
     return_aim = f"/plan/{team.id}/{year}/{kw}"
     lst_ds_group = team.groups.filter(activ=True)
+    # Datum aus Kalenderwoche und Wochentag berechnen
     d = f"{year}-W{kw}"
     r = datetime.datetime.strptime(d + '-1', "%Y-W%W-%w")
     week = []
     for i in range(5):
+        # Datum für Spaltenüberschrift täglich aufaddieren 
         week.append(r.strftime('%d.%m.'))
         r += datetime.timedelta(days=1)
     lst_gruppe = team.groups.filter(activ=True)
@@ -51,17 +58,28 @@ def plan_grob(request, team, year, kw):
         for daytime in daytimes:
             lst_day = []
             for day in range(5):
+                # Jour Fixe?
+                datum = datetime.datetime.strptime(f'{year} {kw} {day+1}','%Y %W %w')
+                ds_jf = JourFixe.objects.filter(gruppe=gruppe, datum__date = datum)
+                jf = None
+                if ds_jf:
+                    if ds_jf[0].get_daytime == daytime:
+                        jf = ds_jf[0].datum
+                    
                 ds = Block.objects.filter(group=gruppe, year=year, kw=kw, day=day, daytime=daytime)
                 if len(ds) != 0:   # Datensatz vorhanden
-                    lst_day.append((ds[0], day))
+                    # Lernblöcke für Aubi raussuchen
+                    aubi = ds[0].teacher
+                    lst_lernbloecke = Lehrblock.objects.filter(aubi=aubi)
+                    lst_day.append((ds[0], day, lst_lernbloecke, jf))
                 else:
-                    lst_day.append((("--------", "", "white"), day))
+                    lst_day.append((("--------", "", "white"), day, None, jf))
             lst_daytime.append((lst_day, daytime))
         lst_group.append((lst_daytime, gruppe))
 
     team_lst = team.members.all()           
     if request.user.id is not None:                             # User ist angemeldet
-        aubi_ds  = Ausbilder.objects.get(user=request.user)     # User ist Teil des Teams
+        aubi_ds  = Aubi.objects.get(user=request.user)     # User ist Teil des Teams
         editable = aubi_ds in list(team_lst)
     else:
         editable = False
@@ -83,12 +101,12 @@ def plan_grob(request, team, year, kw):
 
 def block(request, group, year, kw, day, daytime, aubi_id, team):
     gruppe_ds = Gruppe.objects.get(id=group)
-    teacher_ds = Ausbilder.objects.get(id=aubi_id)
+    teacher_ds = Aubi.objects.get(id=aubi_id)
 
     # Ausbilder muss in dem entsprechendem Team sein
     team_ds = Team.objects.get(id=team)
     team_lst = team_ds.members.all()
-    aubi_ds = Ausbilder.objects.get(user=request.user)
+    aubi_ds = Aubi.objects.get(user=request.user)
     if aubi_ds in list(team_lst):               
         ds, fail = Block.objects.get_or_create(
             group=gruppe_ds, 
@@ -122,6 +140,24 @@ def set_content(request, id, content, team, year, kw):
     ds_log.description = "content changed"
     ds_log.save()
 
+    return redirect(f"/plan/{team}/{year}/{kw}")
+
+def set_lehrplan(request, block, plan, team, year, kw):
+    # print("Set lehrplan")
+    ds_block = Block.objects.get(id=block)
+    ds_plan = Lehrblock.objects.get(id=plan)
+    
+    ds_block.lehrblock = ds_plan
+    ds_block.save()
+    
+    # print(f"Block {ds_block} eingetragen")
+    return redirect(f"/plan/{team}/{year}/{kw}")
+
+def clear_lehrplan(request, block, team, year, kw):
+    ds_block = Block.objects.get(id=block)
+    ds_block.lehrblock = None
+    ds_block.save()
+    
     return redirect(f"/plan/{team}/{year}/{kw}")
 
 def clear_content(request, id, team, year, kw):

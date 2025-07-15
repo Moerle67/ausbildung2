@@ -2,6 +2,9 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
 
+from stammdaten.models import Ausbilder as Aubi
+
+
 # Create your models here.
 
 class Rahmenlehrplan(models.Model):
@@ -79,34 +82,37 @@ class Lernfeld(models.Model):
         return reverse("Lernfeld_detail", kwargs={"pk": self.pk})
 
 
-class Aubi(models.Model):
-    name = models.CharField(("Name"), max_length=150)
-    kuerzel = models.CharField(("Kürzel"), max_length=5)
-    user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE, blank=True, null=True)
-    aktiv = models.BooleanField(("aktiv"), default=True)
+# class Aubi(models.Model):
+#     name = models.CharField(("Name"), max_length=150)
+#     kuerzel = models.CharField(("Kürzel"), max_length=5)
+#     user = models.OneToOneField(User, verbose_name=("User"), on_delete=models.CASCADE, blank=True, null=True)
+#     aktiv = models.BooleanField(("aktiv"), default=True)
 
-    class Meta:
-        verbose_name = ("Ausbilder")
-        verbose_name_plural = ("Ausbilder")
+#     class Meta:
+#         verbose_name = ("Ausbilder")
+#         verbose_name_plural = ("Ausbilder")
 
-    def __str__(self):
-        return f"{self.kuerzel} - {self.name}"
+#     def __str__(self):
+#         return f"{self.kuerzel} - {self.name}"
 
-    def get_absolute_url(self):
-        return reverse("Aubi_detail", kwargs={"pk": self.pk})
+#     def get_absolute_url(self):
+#         return reverse("Aubi_detail", kwargs={"pk": self.pk})
     
+
 class Block(models.Model):
-    aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE)
+    aubi = models.ForeignKey(Aubi, verbose_name=("Ausbilder"), on_delete=models.CASCADE, related_name="AubiRLP")
     lernfeld = models.ForeignKey(Lernfeld, verbose_name=("Lernfeld"), on_delete=models.CASCADE)
     laenge = models.IntegerField(("cia Ausbildungseinheiten"))
+    inhalt = models.CharField(("Inhalt"), max_length=30)
     beschreibung = models.TextField(("Beschreibung"))
 
     class Meta:
         verbose_name = ("Block")
         verbose_name_plural = ("Blöcke")
+        ordering = ["aubi", "lernfeld"]
 
     def __str__(self):
-        return f"{self.aubi} - {self.lernfeld} ({self.laenge} Stunden)"
+        return f"{self.aubi}-{self.lernfeld.nummer}/{self.inhalt} ({self.laenge} Stunden)"
 
     def get_absolute_url(self):
         return reverse("_detail", kwargs={"pk": self.pk})

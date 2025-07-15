@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pruefung.apps.PruefungConfig',
     'klausur.apps.KlausurConfig',
+    'stammdaten.apps.StammdatenConfig',
 ]
 
 MIDDLEWARE = [
