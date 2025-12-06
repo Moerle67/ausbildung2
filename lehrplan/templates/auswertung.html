@@ -1,0 +1,20 @@
+
+{% extends "base_form.html" %}
+
+{% block title %}Inhalte{% endblock title %}
+{% block h1 %}Auswertung Ausbildungsinhalte{% endblock h1 %}
+
+{% block header %}
+  <h1>Auswertung Ausbildung</h1> 
+{% endblock header %}
+
+{% block zusatz %}
+<div class="col">
+   
+</div>
+<script>
+    function newgrp(gruppe) {
+        window.location = "/lehrplan/ausw/"+gruppe;
+    }
+</script>
+{% endblock zusatz %}

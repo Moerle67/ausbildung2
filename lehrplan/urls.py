@@ -9,4 +9,8 @@ urlpatterns = [
     path('add_block/<int:nrLernfeld>', views.addBlock, name = 'addBlock'),
     path('del_block/<int:nrBlock>', views.delBlock, name = 'delBlock'),
     path('edt_block/<int:nrBlock>', views.edtBlock, name = 'edtBlock'),
+    
+    path('ausw', views.auswertung, name="Auswertung"),
+    path('ausw/<int:gruppe>', views.auswertung, name="Auswertung"),
+
 ]

@@ -103,7 +103,6 @@ def edtBlock(request, nrBlock):
 def auswertung(request, gruppe="leer"):
     if gruppe=="leer":                                       # Noch keine Gruppe ausgewählt
         gruppe_ds = Gruppe.objects.filter(activ=True)[0]
-        print("first",gruppe_ds)
         return redirect(f"/lehrplan/ausw/{gruppe_ds.id}")
     else:
         gruppe_ds = get_object_or_404(Gruppe, id=gruppe)
@@ -114,10 +113,14 @@ def auswertung(request, gruppe="leer"):
     berufe = gruppe_ds.berufe.all()
     lst_lehrplaene = []
     for beruf in berufe:
-        if beruf.lehrplan not in lst_lehrplaene:
+        if beruf.lehrplan not in lst_lehrplaene and beruf.lehrplan is not None:
             lst_lehrplaene.append(beruf.lehrplan)
     print(lst_lehrplaene)
-    frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False)
+    for lehrplan in lst_lehrplaene:
+        lernfelder = Lernfeld.objects.filter(rahmenlehrplan=lehrplan)
+        for lernfeld in lernfelder:
+            print(lernfeld)
+    frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False, attr="onclick=newgrp(this.value)")
     form = (frm_grp,)
     content = {
         'gruppen' : gruppen,

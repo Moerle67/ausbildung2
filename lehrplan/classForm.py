@@ -83,10 +83,11 @@ class FormAuswahl:
     liste = ""
     value = ""
     name = ""
-    def __init__(self, name, liste, value=0, aktiv=True, submit=False, label=True):
+    def __init__(self, name, liste, value=0, aktiv=True, submit=False, label=True, attr=""):
             self.liste = liste
             self.submit = submit
             self.label = label
+            self.attr = attr
             try:
                 self.value = int(value)
             except:
@@ -102,6 +103,7 @@ class FormAuswahl:
         if self.label:
             antwort = '\n<label for="'+self.name+'">'+self.name+': </label>\n'
         antwort += '<select '
+        antwort += self.attr+" "
         if self.submit:
             antwort+= ' onchange="this.form.submit()" '
         antwort += 'name="'+self.name+'" class="form-control">\n'
