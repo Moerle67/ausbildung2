@@ -28,7 +28,8 @@ class Beruf(models.Model):
     kuerzel = models.CharField(("Kürzel"), max_length=5)
     name = models.CharField(("Name"), max_length=50)
     beschreibung = models.TextField(("Beschreibung"), null=True, blank=True)
-    
+    lehrplan = models.ForeignKey(Rahmenlehrplan, verbose_name=("Rahmenlehrplan"), on_delete=models.RESTRICT, null=True, blank=True )
+
     class Meta:
         verbose_name = ("Beruf")
         verbose_name_plural = ("Berufe")
