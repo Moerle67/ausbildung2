@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 # 
 from stammdaten.models import Ausbilder as Aubi
+from lehrplan.models import Beruf
 
 from lehrplan.models import Block as Lehrblock
 
@@ -28,6 +29,7 @@ class Gruppe(models.Model):
     short = models.CharField(("Kürzel"), max_length=10)
     room = models.CharField(("Raum"), max_length=10)
     activ = models.BooleanField(("Aktiv"), default = True)
+    berufe = models.ManyToManyField(Beruf, verbose_name=("Berufe"))
 
     class Meta:
         verbose_name = ("Gruppe")
