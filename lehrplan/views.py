@@ -68,6 +68,15 @@ def auswertung(request, gruppe="leer"):
     else:
         gruppe_ds = get_object_or_404(Gruppe, id=gruppe)
     gruppen = Gruppe.objects.filter(activ=True)
+
+    # Lehrpläne aus den Gruppen zusammensuchen
+    # sind mit den Berufen verbunden
+    berufe = gruppe_ds.berufe.all()
+    lst_lehrplaene = []
+    for beruf in berufe:
+        if beruf.lehrplan not in lst_lehrplaene:
+            lst_lehrplaene.append(beruf.lehrplan)
+    print(lst_lehrplaene)
     frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False)
     form = (frm_grp,)
     content = {

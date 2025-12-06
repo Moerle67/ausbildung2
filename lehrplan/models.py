@@ -24,7 +24,9 @@ class Rahmenlehrplan(models.Model):
 class Beruf(models.Model):
     kuerzel = models.CharField(("Kürzel"), max_length=5)
     name = models.CharField(("Name"), max_length=50)
+    lehrplan = models.ForeignKey(Rahmenlehrplan, verbose_name=("Lehrplan"), on_delete=models.RESTRICT, null=True, blank=True)
     beschreibung = models.TextField(("Beschreibung"), null=True, blank=True)
+
     
     class Meta:
         verbose_name = ("Beruf")
