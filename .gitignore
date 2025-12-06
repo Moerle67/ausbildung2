@@ -3,7 +3,6 @@ ausbildung/__pycache__/*
 pruefung/__pycache__/*
 klausur/__pycache__/*
 */__pycache__/*
-
 db.sqlite3
 db_200404.sqlite3
 db.sqlite_240403
@@ -12,3 +11,7 @@ db.sqlite3.bac
 *.json
 *sqlite*
 db .sqlite3.bak4
+klausur/__pycache__/*
+*/__pycache__/*
+
+

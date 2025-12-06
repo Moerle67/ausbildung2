@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,  get_object_or_404
 from django.http import HttpResponse
-from .classForm import FormInput, FormTextArea, FormBtnSave, formLinie
+from .classForm import FormInput, FormTextArea, FormBtnSave, formLinie, FormAuswahl
 
 from .models import Rahmenlehrplan, Lernfeld, Block, Aubi
+from plan.models import Gruppe
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
 # Create your views here.
@@ -57,3 +58,21 @@ def delBlock(request, nrBlock):
 
         block.delete()
     return redirect(f"/lehrplan/{lehrplan.id}")
+
+@permission_required('lehrplan.delete_block')
+def auswertung(request, gruppe="leer"):
+    if gruppe=="leer":                                       # Noch keine Gruppe ausgewählt
+        gruppe_ds = Gruppe.objects.filter(activ=True)[0]
+        print("first",gruppe_ds)
+        return redirect(f"/lehrplan/ausw/{gruppe_ds.id}")
+    else:
+        gruppe_ds = get_object_or_404(Gruppe, id=gruppe)
+    gruppen = Gruppe.objects.filter(activ=True)
+    frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False)
+    form = (frm_grp,)
+    content = {
+        'gruppen' : gruppen,
+        'gruppe'  : gruppe_ds.id,
+        'forms'    : form,
+    }
+    return render(request, "auswertung.html", content)
