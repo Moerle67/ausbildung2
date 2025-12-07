@@ -17,6 +17,7 @@
                 <a href="/plan/copy_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-info ms-3" title="Plan aus letzte Woche übernehmen"><i class="bi bi-copy"></i></button></a>
                 <a href="/plan/delete_plan/{{team.id}}/{{year}}/{{kw}}" class="d-print-none"><button type="button" class="btn btn-outline-danger ms-3" title="Wochenplan zurücksetzen"><i class="bi bi-x-octagon-fill"></i></button></a>
                 <a href="/lehrplan/1" target="_blank"><button type="button" class="btn btn-outline-info ms-3" title="Lehrplan bearbeiten">Lehrplan</button></a>
+                <a href="{% url 'Auswertung' %}" title="Ausbildung auswerten" target="_blank"><button type="button" class="btn btn-outline-success">Auswertung</button></a>
             {% endif %}    
             </h1>
         </div>  
