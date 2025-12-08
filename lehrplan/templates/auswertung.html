@@ -8,9 +8,17 @@
   <h1>Auswertung Ausbildung</h1> 
 {% endblock header %}
 
+
 {% block zusatz %}
 <div class="col">
-   
+   {% for plan in ergebnis %}
+      <h5>{{plan.0}}</h5>
+      <ul>
+        {% for block in  plan.1%}
+        <li class="{{block.2}}">{{block.0}} - {{block.1}}</li>
+        {% endfor %}
+      </ul> 
+   {% endfor %}
 </div>
 <script>
     function newgrp(gruppe) {

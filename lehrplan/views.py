@@ -6,6 +6,7 @@ from .classForm import FormInput, FormTextArea, FormBtnSave, formLinie, FormAusw
 
 from .models import Rahmenlehrplan, Lernfeld, Block, Aubi
 from plan.models import Gruppe
+from plan.models import Block as PlanBlock
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import permission_required
@@ -101,6 +102,7 @@ def edtBlock(request, nrBlock):
 
 @permission_required('lehrplan.delete_block')
 def auswertung(request, gruppe="leer"):
+    stunden_einheit = 5 # Sunden pro Einheit (am/pm)
     if gruppe=="leer":                                       # Noch keine Gruppe ausgewählt
         gruppe_ds = Gruppe.objects.filter(activ=True)[0]
         return redirect(f"/lehrplan/ausw/{gruppe_ds.id}")
@@ -116,15 +118,30 @@ def auswertung(request, gruppe="leer"):
         if beruf.lehrplan not in lst_lehrplaene and beruf.lehrplan is not None:
             lst_lehrplaene.append(beruf.lehrplan)
     print(lst_lehrplaene)
+    lst_ergebnis = []
     for lehrplan in lst_lehrplaene:
         lernfelder = Lernfeld.objects.filter(rahmenlehrplan=lehrplan)
+        lst_lernfelder=[]
         for lernfeld in lernfelder:
-            print(lernfeld)
-    frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False, attr="onclick=newgrp(this.value)")
+            summe = 0
+            # Lernfelder auswerten
+            lernbloecke = Block.objects.filter(lernfeld=lernfeld)
+            for block in lernbloecke:
+                lernfelder_ds= PlanBlock.objects.filter(group=gruppe_ds, lehrblock= block)
+                summe += len(lernfelder_ds)
+            if summe*stunden_einheit > lernfeld.get_stunden:
+                colorcode = "text-success"
+            else:
+                colorcode = "text-danger"
+            lst_lernfelder.append((lernfeld, summe*stunden_einheit, colorcode))
+        lst_ergebnis.append((lehrplan,lst_lernfelder))
+    print(lst_ergebnis)
+    frm_grp = FormAuswahl("Gruppe",Gruppe, gruppe_ds.id, aktiv=False, attr="onchange=newgrp(this.value)")
     form = (frm_grp,)
     content = {
-        'gruppen' : gruppen,
-        'gruppe'  : gruppe_ds.id,
+        'gruppen'  : gruppen,
+        'gruppe'   : gruppe_ds.id,
         'forms'    : form,
+        'ergebnis' : lst_ergebnis,
     }
     return render(request, "auswertung.html", content)
